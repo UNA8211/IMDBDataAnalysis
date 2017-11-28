@@ -1,19 +1,28 @@
+import java.util.List;
+
 public class Analysis {
 
     public Analysis() {
 
     }
 
-    private static void findCommonPairs(Dataset actorPairs) {
-        Dataset uniquePairs = new Dataset(actorPairs);
-        for (int i = 0; i < actorPairs.size(); i++) {
-            String nConst1 = actorPairs.get(i).get(1);
-            String nConst2 = actorPairs.get(i).get(3);
-            for (int j = 0; j < actorPairs.size(); j++) {
-                if (true) {
+    public static void actorDeath(Dataset died, Dataset living) {
+        // Get average rating of each dataset
+        float avgDiedRating = 0.f;
+        float avgLivingRating = 0.f;
+        int ratingIndex = died.get(0).size() - 1;
 
-                }
-            }
+        for (List<String> example : died) {
+            avgDiedRating += Float.parseFloat(example.get(ratingIndex));
         }
+        avgDiedRating /= died.size();
+
+        for (List<String> example : living) {
+            avgLivingRating += Float.parseFloat(example.get(ratingIndex));
+        }
+        avgLivingRating /= living.size();
+
+        System.out.println("Avg rating for dead actors: " + avgDiedRating);
+        System.out.println("Avg rating for living actors: " + avgLivingRating);
     }
 }
