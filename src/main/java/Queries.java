@@ -24,7 +24,7 @@ public final class Queries {
             "LIMIT 100";
 
     public static String test = "" +
-            "SELECT primaryName, genre " +
+            "SELECT primaryName, genre, tConst " +
             "FROM Person NATURAL JOIN Acts_In NATURAL JOIN Production NATURAL JOIN Genre " +
             // "WHERE true " +
             "LIMIT 100";
