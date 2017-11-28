@@ -31,10 +31,10 @@ public final class Queries {
 
     public static String actorPairs = "" +
             "SELECT DISTINCT\n" +
-            "   Actor1.primaryName,\n" +
-            "   Actor1.nConst,\n" +
-            "   Actor2.primaryName,\n" +
-            "   Actor2.nConst\n" +
+            "   Actor1.primaryName as name1,\n" +
+            "   Actor1.nConst as id1,\n" +
+            "   Actor2.primaryName as name2,\n" +
+            "   Actor2.nConst as id2\n" +
             "FROM\n" +
             "   (SELECT\n" +
             "       primaryName,\n" +
@@ -54,8 +54,8 @@ public final class Queries {
             "   FROM Person\n" +
             "       NATURAL JOIN Acts_In\n" +
             "       NATURAL JOIN Production) AS Actor2\n" +
-            "WHERE Actor1.nConst != Actor2.nConst\n" +
+            "WHERE Actor1.nConst NOT LIKE Actor2.nConst\n" +
             "   AND Actor1.primaryTitle LIKE Actor2.primaryTitle\n" +
             "   AND Actor1.titleType LIKE 'movie'\n" +
-            "LIMIT 10000";
+            "LIMIT 50";
 }
