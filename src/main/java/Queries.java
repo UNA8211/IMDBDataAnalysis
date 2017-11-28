@@ -6,15 +6,43 @@ public final class Queries {
             "WHERE p2.primaryTitle LIKE p1.primaryTitle + '%' " +
             "LIMIT 1000";
 
-    public static String deadBeforeRelease = "" +
-            "SELECT p.primaryName, p.deathYear, m.primaryTitle, m.startYear " +
-            "FROM Person p, Acts_In pr, Production m " +
-            "WHERE p.deathYear IS NOT NULL " +
-            "AND p.deathYear > 2000 " +
-            "AND p.nConst = pr.nConst " +
-            "AND pr.tConst = m.tConst " +
-            "AND m.startYear >= p.deathYear " +
-            "AND m.titleType = 'movie' " +
+    public static String actorDiedBeforeRelease = "" +
+            "SELECT\n" +
+            "  primaryName,\n" +
+            "  deathYear,\n" +
+            "  primaryTitle,\n" +
+            "  startYear,\n" +
+            "  averageRating\n" +
+            "FROM Person\n" +
+            "  NATURAL JOIN Acts_In\n" +
+            "  NATURAL JOIN Production\n" +
+            "  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst\n" +
+            "WHERE\n" +
+            "  deathYear IS NOT NULL\n" +
+            "  AND averageRating IS NOT NULL\n" +
+            "  AND deathYear > 1980\n" +
+            "  AND startYear > deathYear\n" +
+            "  AND titleType = 'movie'\n" +
+            "  AND adult = 0\n" +
+            "ORDER BY primaryName ASC";
+
+    public static String actorNotDiedBeforeRelease = "" +
+            "SELECT\n" +
+            "  primaryName,\n" +
+            "  deathYear,\n" +
+            "  primaryTitle,\n" +
+            "  startYear,\n" +
+            "  averageRating\n" +
+            "FROM Person\n" +
+            "  NATURAL JOIN Acts_In\n" +
+            "  NATURAL JOIN Production\n" +
+            "  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst\n" +
+            "WHERE\n" +
+            "  averageRating IS NOT NULL\n" +
+            "  AND (deathYear IS NULL OR startYear < deathYear)\n" +
+            "  AND startYear > 1980\n" +
+            "  AND titleType = 'movie'\n" +
+            "  AND adult = 0\n" +
             "ORDER BY primaryName ASC";
 
     public static String actorsPrimaryGenre = "" +
