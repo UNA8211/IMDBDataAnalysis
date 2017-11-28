@@ -1,3 +1,4 @@
+@SuppressWarnings("WeakerAccess")
 public final class Queries {
 
     public static String sequels = "" +
@@ -6,44 +7,48 @@ public final class Queries {
             "WHERE p2.primaryTitle LIKE p1.primaryTitle + '%' " +
             "LIMIT 1000";
 
-    public static String actorDiedBeforeRelease = "" +
-            "SELECT\n" +
-            "  primaryName,\n" +
-            "  deathYear,\n" +
-            "  primaryTitle,\n" +
-            "  startYear,\n" +
-            "  averageRating\n" +
-            "FROM Person\n" +
-            "  NATURAL JOIN Acts_In\n" +
-            "  NATURAL JOIN Production\n" +
-            "  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst\n" +
-            "WHERE\n" +
-            "  deathYear IS NOT NULL\n" +
-            "  AND averageRating IS NOT NULL\n" +
-            "  AND deathYear > 1980\n" +
-            "  AND startYear > deathYear\n" +
-            "  AND titleType = 'movie'\n" +
-            "  AND adult = 0\n" +
-            "ORDER BY primaryName ASC";
+    public static String getActorDiedBeforeRelease(int startYear, int endYear) {
+        return "SELECT\n" +
+                "  primaryName,\n" +
+                "  deathYear,\n" +
+                "  primaryTitle,\n" +
+                "  startYear,\n" +
+                "  averageRating\n" +
+                "FROM Person\n" +
+                "  NATURAL JOIN Acts_In\n" +
+                "  NATURAL JOIN Production\n" +
+                "  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst\n" +
+                "WHERE\n" +
+                "  deathYear IS NOT NULL\n" +
+                "  AND averageRating IS NOT NULL\n" +
+                "  AND startYear > deathYear\n" +
+                "  AND startYear > " + startYear + "\n" +
+                "  AND startYear < " + endYear + "\n" +
+                "  AND titleType = 'movie'\n" +
+                "  AND adult = 0\n" +
+                "ORDER BY primaryName ASC";
+    }
 
-    public static String actorNotDiedBeforeRelease = "" +
-            "SELECT\n" +
-            "  primaryName,\n" +
-            "  deathYear,\n" +
-            "  primaryTitle,\n" +
-            "  startYear,\n" +
-            "  averageRating\n" +
-            "FROM Person\n" +
-            "  NATURAL JOIN Acts_In\n" +
-            "  NATURAL JOIN Production\n" +
-            "  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst\n" +
-            "WHERE\n" +
-            "  averageRating IS NOT NULL\n" +
-            "  AND (deathYear IS NULL OR startYear < deathYear)\n" +
-            "  AND startYear > 1980\n" +
-            "  AND titleType = 'movie'\n" +
-            "  AND adult = 0\n" +
-            "ORDER BY primaryName ASC";
+    public static String getActorNotDiedBeforeReleaseQuery(int startYear, int endYear) {
+        return "SELECT\n" +
+                "  primaryName,\n" +
+                "  deathYear,\n" +
+                "  primaryTitle,\n" +
+                "  startYear,\n" +
+                "  averageRating\n" +
+                "FROM Person\n" +
+                "  NATURAL JOIN Acts_In\n" +
+                "  NATURAL JOIN Production\n" +
+                "  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst\n" +
+                "WHERE\n" +
+                "  averageRating IS NOT NULL\n" +
+                "  AND (deathYear IS NULL OR startYear < deathYear)\n" +
+                "  AND startYear > " + startYear + "\n" +
+                "  AND startYear < " + endYear + "\n" +
+                "  AND titleType = 'movie'\n" +
+                "  AND adult = 0\n" +
+                "ORDER BY primaryName ASC";
+    }
 
     public static String actorsPrimaryGenre = "" +
             "SELECT COUNT(primaryName) " +

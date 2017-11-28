@@ -6,7 +6,7 @@ public class Analysis {
 
     }
 
-    public static void actorDeath(Dataset died, Dataset living) {
+    public static void actorDeath(Dataset died, Dataset living, int startYear, int endYear) {
         // Get average rating of each dataset
         float avgDiedRating = 0.f;
         float avgLivingRating = 0.f;
@@ -22,7 +22,9 @@ public class Analysis {
         }
         avgLivingRating /= living.size();
 
+        System.out.println("Year Range: (" + startYear + ", " + endYear + ")");
         System.out.println("Avg rating for dead actors: " + avgDiedRating);
         System.out.println("Avg rating for living actors: " + avgLivingRating);
+        System.out.println();
     }
 }
