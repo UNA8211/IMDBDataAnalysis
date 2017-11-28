@@ -1,12 +1,14 @@
 import java.sql.*;
 
 public class QueryEngine {
-    Connection conn;
-    public QueryEngine() {
+
+    private Connection connection;
+
+    QueryEngine() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://35.197.99.197:3306/movie";
-            conn = DriverManager.getConnection(url,"root","potatoes");
+            connection = DriverManager.getConnection(url, "root", "potatoes");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
@@ -14,14 +16,14 @@ public class QueryEngine {
         }
     }
 
-    public ResultSet executeQuery(String query) {
+    public Dataset executeQuery(String query) {
         try {
-            Statement stmt = conn.createStatement();
+            Statement stmt = connection.createStatement();
             ResultSet rs;
 
             rs = stmt.executeQuery(query);
 
-            return rs;
+            return new Dataset(rs);
         } catch (SQLException e) {
             System.err.print(e.getMessage());
         }
@@ -30,8 +32,8 @@ public class QueryEngine {
 
     public void closeConnection() {
         try {
-            if (conn != null) {
-                conn.close();
+            if (connection != null) {
+                connection.close();
             }
         } catch (SQLException e) {
             System.err.print(e.getMessage());
