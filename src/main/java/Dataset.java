@@ -2,10 +2,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
-public class Dataset extends HashSet<List<String>> {
+public class Dataset extends ArrayList<List<String>> {
 
     Dataset(ResultSet r) {
         convert(r);

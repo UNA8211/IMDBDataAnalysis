@@ -10,6 +10,8 @@
       <secret-storage>master_key</secret-storage>
       <user-name>root</user-name>
       <introspection-schemas>*:movie</introspection-schemas>
+      <legacy-introspector>true</legacy-introspector>
+      <load-sources>user_and_system_sources</load-sources>
     </data-source>
   </component>
 </project>
