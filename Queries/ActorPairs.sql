@@ -1,28 +1,25 @@
 SELECT
-  Actor1.nConst AS id1,
-  Actor2.nConst AS id2
-FROM
-  (SELECT
-     nConst,
-     primaryName,
-     primaryTitle,
-     tConst
-   FROM Person
-     NATURAL JOIN Acts_In
-     NATURAL JOIN Production
-   WHERE titleType = 'movie'
-         AND startYear > 1980) AS Actor1
-  INNER JOIN
-  (SELECT
-     nConst,
-     primaryName,
-     primaryTitle,
-     tConst
-   FROM Person
-     NATURAL JOIN Acts_In
-     NATURAL JOIN Production
-   WHERE titleType = 'movie'
-         AND startYear > 1980) AS Actor2
-    ON Actor1.tConst = Actor2.tConst
-WHERE Actor1.nConst != Actor2.nConst
-      AND Actor1.tConst = Actor2.tConst;
+  actor1.nConst as nConst1,
+  actor2.nConst as nConst2,
+  averageRating as Rating
+FROM (
+    (SELECT
+       nConst,
+       tConst
+     FROM Person
+       NATURAL JOIN Acts_In
+    ) AS actor1
+    JOIN (SELECT
+            nConst,
+            tConst
+          FROM Person
+            NATURAL JOIN Acts_In
+         ) AS actor2
+      ON actor1.tConst = actor2.tConst AND actor1.nConst != actor2.nConst)
+  LEFT JOIN Production
+    ON startYear > 1980
+       AND startYear < 2020
+       AND actor1.tConst = Production.tConst
+  JOIN Ratings
+    ON Production.tConst = Ratings.tConst
+LIMIT 10000;

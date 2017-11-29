@@ -14,18 +14,14 @@ public class Dataset extends ArrayList<List<String>> {
         super(dataset);
     }
 
-    Dataset(ResultSet r) {
-        convert(r);
-    }
-
-    private void convert(ResultSet resultSet) {
+    Dataset(ResultSet resultSet) {
         try {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
             String[] columns = new String[columnCount];
 
             for (int i = 1; i <= columnCount; i++) {
-                columns[i - 1] = metaData.getColumnName(i);
+                columns[i - 1] = metaData.getColumnLabel(i);
             }
 
             while (resultSet.next()) {

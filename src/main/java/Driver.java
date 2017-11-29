@@ -55,6 +55,7 @@ public class Driver {
 
     private static void performanceOfActorPairs(QueryEngine engine) {
         Dataset actorPairs = engine.executeQuery(Queries.getActorPairsQuery(2000, 2020));
-        Analysis.actorPairs(actorPairs, 2000, 2020);
+        Dataset avgActorRatings = engine.executeQuery(Queries.getActorAverageRatingQuery(2000, 2020));
+        Analysis.actorPairs(actorPairs, avgActorRatings, 2000, 2020);
     }
 }
