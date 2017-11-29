@@ -54,8 +54,39 @@ public class Driver {
     }
 
     private static void performanceOfActorPairs(QueryEngine engine) {
-        Dataset actorPairs = engine.executeQuery(Queries.getActorPairsQuery(2000, 2020));
-        Dataset avgActorRatings = engine.executeQuery(Queries.getActorAverageRatingQuery(2000, 2020));
-        Analysis.actorPairs(actorPairs, avgActorRatings, 2000, 2020);
+        // 1960s
+        Dataset sixtiesActorPairs = engine.executeQuery(Queries.getActorPairsQuery(1960, 1970));
+        Dataset sixtiesIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(1960, 1970));
+        Analysis.actorPairs(sixtiesActorPairs, sixtiesIndividualActors, 1960, 1970);
+
+        // 1970s
+        Dataset seventiesActorPairs = engine.executeQuery(Queries.getActorPairsQuery(1970, 1980));
+        Dataset seventiesIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(1970, 1980));
+        Analysis.actorPairs(seventiesActorPairs, seventiesIndividualActors, 1970, 1980);
+
+        // 1980s
+        Dataset eightiesActorPairs = engine.executeQuery(Queries.getActorPairsQuery(1980, 1990));
+        Dataset eightiesIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(1980, 1990));
+        Analysis.actorPairs(eightiesActorPairs, eightiesIndividualActors, 1980, 1990);
+
+        // 1990s
+        Dataset ninetiesActorPairs = engine.executeQuery(Queries.getActorPairsQuery(1990, 2000));
+        Dataset ninetiesIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(1990, 2000));
+        Analysis.actorPairs(ninetiesActorPairs, ninetiesIndividualActors, 1990, 2000);
+
+        // 2000s
+        Dataset zerosActorPairs = engine.executeQuery(Queries.getActorPairsQuery(2000, 2010));
+        Dataset zerosIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(2000, 2010));
+        Analysis.actorPairs(zerosActorPairs, zerosIndividualActors, 2000, 2010);
+
+        // 2010s
+        Dataset tensActorPairs = engine.executeQuery(Queries.getActorPairsQuery(2010, 2020));
+        Dataset tensIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(2010, 2020));
+        Analysis.actorPairs(tensActorPairs, tensIndividualActors, 2010, 2020);
+
+        // All time
+        Dataset allTimeActorPairs = engine.executeQuery(Queries.getActorPairsQuery(0, 2020));
+        Dataset allTimeIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(0, 2020));
+        Analysis.actorPairs(allTimeActorPairs, allTimeIndividualActors, 0, 2020);
     }
 }

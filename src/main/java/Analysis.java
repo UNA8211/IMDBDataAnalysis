@@ -31,10 +31,6 @@ public class Analysis {
     }
 
     public static void actorPairs(Dataset actorPairs, Dataset averageActorRatings, int startYear, int endYear) {
-        System.out.println("Begin analysis: (" + startYear + ", " + endYear + ")");
-        System.out.println("Actor Pairs: " + actorPairs.size());
-        System.out.println("Individuals: " + averageActorRatings.size());
-
         // Collect pairs in hash table computing average ratings
         HashMap<Integer, ActorPair> pairs = new HashMap<>();
         actorPairs.parallelStream().forEachOrdered(actorPair -> {
@@ -70,19 +66,36 @@ public class Analysis {
         // Remove elements without individual data, use one because ya know.. 0.0 doesn't equal 0
         frequentPairs.removeIf(actorPair -> actorPair.getAvgIndividualActorQuality() < 1);
 
-        float combinedSum = 0.f;
-        float individualSum = 0.f;
-        for (ActorPair pair : frequentPairs) {
-            combinedSum += pair.getCombinedActorQuality();
-            individualSum += pair.getAvgIndividualActorQuality();
-            System.out.println(pair.toString());
+        System.out.println(startYear != 0 ? "Decade: " + startYear + "s" : "All time");
+        computeStats(frequentPairs);
+    }
+
+    private static void computeStats(List<ActorPair> pairs) {
+        // Sample means
+        double combinedMean = 0.0;
+        double individualMean = 0.0;
+
+        for (ActorPair pair : pairs) {
+            combinedMean += pair.getCombinedActorQuality();
+            individualMean += pair.getAvgIndividualActorQuality();
         }
-        combinedSum /= frequentPairs.size();
-        individualSum /= frequentPairs.size();
 
-        System.out.println("Avg individual rating: " + individualSum);
-        System.out.println("Avg combined rating: " + combinedSum);
+        combinedMean /= pairs.size();
+        individualMean /= pairs.size();
 
-        // Todo: Standard Dev
+        // Sample standard deviations
+        double combinedStd = 0.0;
+        double individualStd = 0.0;
+
+        for (ActorPair pair : pairs) {
+            combinedStd += Math.pow(pair.getCombinedActorQuality() - combinedMean, 2);
+            individualStd += Math.pow(pair.getAvgIndividualActorQuality() - individualMean, 2);
+        }
+
+        combinedStd = Math.sqrt(combinedStd / pairs.size());
+        individualStd = Math.sqrt(individualStd / pairs.size());
+
+        System.out.println("Combined: " + combinedMean + ", (" + combinedStd + ")");
+        System.out.println("Individual: " + individualMean + ", (" + individualStd + ")");
     }
 }

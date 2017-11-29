@@ -76,7 +76,7 @@ public final class Queries {
                 "       AND actor1.tConst = Production.tConst\n" +
                 "  JOIN Ratings\n" +
                 "    ON Production.tConst = Ratings.tConst\n" +
-                "LIMIT 100000";
+                "LIMIT 500000";
     }
 
     public static String getActorAverageRatingQuery(int startYear, int endYear) {
