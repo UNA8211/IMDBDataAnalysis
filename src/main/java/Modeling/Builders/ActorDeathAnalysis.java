@@ -1,5 +1,6 @@
 package Modeling.Builders;
 
+import Modeling.TimeSpan;
 import QueryEngine.Dataset;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public class ActorDeathAnalysis extends ModelBuilderBase {
 
     @Override
-    public void buildModel(Dataset died, Dataset living, Integer startYear, Integer endYear) {
+    public void buildModel(Dataset died, Dataset living, TimeSpan timeSpan) {
         // Get average rating of each dataset
         float avgDiedRating = 0.f;
         float avgLivingRating = 0.f;
@@ -23,7 +24,7 @@ public class ActorDeathAnalysis extends ModelBuilderBase {
         }
         avgLivingRating /= living.size();
 
-        System.out.println("Year Range: (" + startYear + ", " + endYear + ")");
+        System.out.println("Year Range: (" + timeSpan.startYear + ", " + timeSpan.endYear + ")");
         System.out.println("Avg rating for dead actors: " + avgDiedRating);
         System.out.println("Avg rating for living actors: " + avgLivingRating);
         System.out.println();

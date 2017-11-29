@@ -1,16 +1,38 @@
 package QueryEngine;
 
-@SuppressWarnings("WeakerAccess")
-public final class Queries {
+import Modeling.TimeSpan;
 
-    public static String getSequelsQuery() {
+public class QueryFactory {
+
+    public static String buildQuery(QueryType type, TimeSpan timeSpan) {
+        switch (type) {
+            case ActorDeath:
+                return getActorDiedBeforeReleaseQuery(timeSpan.startYear, timeSpan.endYear);
+            case ActorNotDeath:
+                return getActorNotDiedBeforeReleaseQuery(timeSpan.startYear, timeSpan.endYear);
+            case ActorPair:
+                return getActorPairsQuery(timeSpan.startYear, timeSpan.endYear);
+            case ActorIndividual:
+                return getActorAverageRatingQuery(timeSpan.startYear, timeSpan.endYear);
+            case Awards:
+                return null;
+            case Sequels:
+                return getSequelsQuery();
+            case PrimaryGenre:
+                return getActorsGenres(timeSpan.startYear, timeSpan.endYear);
+            default:
+                throw new IllegalArgumentException("Invalid query type!");
+        }
+    }
+
+    private static String getSequelsQuery() {
         return "SELECT p1.primaryTitle, p2.primaryTitle " +
                 "FROM Production P1, Production P2 " +
                 "WHERE p2.primaryTitle LIKE p1.primaryTitle + '%' " +
                 "LIMIT 1000";
     }
 
-    public static String getActorDiedBeforeReleaseQuery(int startYear, int endYear) {
+    private static String getActorDiedBeforeReleaseQuery(int startYear, int endYear) {
         return "SELECT\n" +
                 "  primaryName,\n" +
                 "  deathYear,\n" +
@@ -32,7 +54,7 @@ public final class Queries {
                 "ORDER BY primaryName ASC";
     }
 
-    public static String getActorNotDiedBeforeReleaseQuery(int startYear, int endYear) {
+    private static String getActorNotDiedBeforeReleaseQuery(int startYear, int endYear) {
         return "SELECT\n" +
                 "  primaryName,\n" +
                 "  deathYear,\n" +
@@ -53,7 +75,7 @@ public final class Queries {
                 "ORDER BY primaryName ASC";
     }
 
-    public static String getActorPairsQuery(int startYear, int endYear) {
+    private static String getActorPairsQuery(int startYear, int endYear) {
         return "SELECT\n" +
                 "  actor1.nConst AS nConst1,\n" +
                 "  actor2.nConst AS nConst2,\n" +
@@ -82,7 +104,7 @@ public final class Queries {
                 "LIMIT 500000";
     }
 
-    public static String getActorAverageRatingQuery(int startYear, int endYear) {
+    private static String getActorAverageRatingQuery(int startYear, int endYear) {
         return "SELECT\n" +
                 "  nConst,\n" +
                 "  AVG(averageRating)\n" +
@@ -101,7 +123,7 @@ public final class Queries {
                 "GROUP BY nConst\n";
     }
 
-    public static String getActorsGenres(int startYear, int endYear) {
+    private static String getActorsGenres(int startYear, int endYear) {
         return "SELECT\n" +
                 "  primaryName,\n" +
                 "  genre,\n" +

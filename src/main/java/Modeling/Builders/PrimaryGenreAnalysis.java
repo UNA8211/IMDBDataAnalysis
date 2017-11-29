@@ -1,5 +1,6 @@
 package Modeling.Builders;
 
+import Modeling.TimeSpan;
 import QueryEngine.Dataset;
 
 public class PrimaryGenreAnalysis extends ModelBuilderBase {
@@ -9,7 +10,7 @@ public class PrimaryGenreAnalysis extends ModelBuilderBase {
     }
 
     @Override
-    public void buildModel(Dataset dataset1, Dataset dataset2, Integer startYear, Integer endYear) {
+    public void buildModel(Dataset dataset1, Dataset dataset2, TimeSpan timeSpan) {
         // NOP
     }
 }

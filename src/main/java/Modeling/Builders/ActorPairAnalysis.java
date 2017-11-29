@@ -1,11 +1,10 @@
 package Modeling.Builders;
 
 import Modeling.ActorPair;
+import Modeling.TimeSpan;
 import QueryEngine.Dataset;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ActorPairAnalysis extends ModelBuilderBase {
 
@@ -14,7 +13,7 @@ public class ActorPairAnalysis extends ModelBuilderBase {
     }
 
     @Override
-    public void buildModel(Dataset actorPairs, Dataset averageActorRatings, Integer startYear, Integer endYear) {
+    public void buildModel(Dataset actorPairs, Dataset averageActorRatings, TimeSpan timeSpan) {
         // Collect pairs in hash table computing average ratings
         HashMap<Integer, ActorPair> pairs = new HashMap<>();
         actorPairs.parallelStream().forEachOrdered(actorPair -> {
@@ -50,7 +49,7 @@ public class ActorPairAnalysis extends ModelBuilderBase {
         // Remove elements without individual data, use one because ya know.. 0.0 doesn't equal 0
         frequentPairs.removeIf(actorPair -> actorPair.getAvgIndividualActorQuality() < 1);
 
-        System.out.println(startYear != 0 ? "Decade: " + startYear + "s" : "All time");
+        System.out.println(timeSpan.startYear != 0 ? "TimeSpan: " + timeSpan.startYear + "s" : "All time");
         computeStats(frequentPairs);
     }
 }

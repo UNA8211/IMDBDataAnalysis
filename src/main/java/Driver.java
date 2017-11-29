@@ -1,111 +1,111 @@
-import Modeling.Builders.ActorDeathAnalysis;
-import Modeling.Builders.ActorPairAnalysis;
-import Modeling.Builders.IModelBuilder;
-import Modeling.Builders.PrimaryGenreAnalysis;
-import QueryEngine.Dataset;
-import QueryEngine.Queries;
-import QueryEngine.QueryEngine;
+import Modeling.Builders.*;
+import Modeling.TimeSpan;
+import QueryEngine.*;
+
+import static QueryEngine.QueryType.*;
 
 public class Driver {
 
-    public static void main(String[] args) {
-        QueryEngine engine = new QueryEngine();
-        performanceOfActorPairs(engine);
-        engine.closeConnection();
+    private static TimeSpan sixties, seventies, eighties, nineties, zeroes, tens, allTime;
 
-//        Dataset results = engine.executeQuery(Queries.test);
-//        results.print();
-//        List<JSONObject> movies = new ArrayList<>();
-//        for (List<String> line : results) {
-//            movies.add(JSONEngine.readJsonFromUrl(line.get(2)));
-//        }
-//        for (JSONObject j : movies) {
-//            System.out.println(j.toString());
-//        }
+    static {
+        sixties = new TimeSpan(1960, 1970);
+        seventies = new TimeSpan(1970, 1980);
+        eighties = new TimeSpan(1980, 1990);
+        nineties = new TimeSpan(1990, 2000);
+        zeroes = new TimeSpan(2000, 2010);
+        tens = new TimeSpan(2010, 2020);
+        allTime = new TimeSpan(1900, 2020);
+    }
+
+    public static void main(String[] args) {
+        QueryEngine queryEngine = new QueryEngine();
+        performanceOfActorPairs(queryEngine);
+        queryEngine.closeConnection();
     }
 
     private static void actorDiedBeforeMovieRelease(QueryEngine engine) {
         IModelBuilder modelBuilder = new ActorDeathAnalysis();
 
         // 1960s
-        Dataset sixtiesDead = engine.executeQuery(Queries.getActorDiedBeforeReleaseQuery(1960, 1970));
-        Dataset sixtiesAlive = engine.executeQuery(Queries.getActorNotDiedBeforeReleaseQuery(1960, 1970));
-        modelBuilder.buildModel(sixtiesDead, sixtiesAlive, 1960, 1970);
+        Dataset sixtiesDead = engine.executeQuery(QueryFactory.buildQuery(ActorDeath, sixties));
+        Dataset sixtiesAlive = engine.executeQuery(QueryFactory.buildQuery(ActorNotDeath, sixties));
+        modelBuilder.buildModel(sixtiesDead, sixtiesAlive, sixties);
 
         // 1970s
-        Dataset seventiesDead = engine.executeQuery(Queries.getActorDiedBeforeReleaseQuery(1970, 1980));
-        Dataset seventiesAlive = engine.executeQuery(Queries.getActorNotDiedBeforeReleaseQuery(1970, 1980));
-        modelBuilder.buildModel(seventiesDead, seventiesAlive, 1970, 1980);
+        Dataset seventiesDead = engine.executeQuery(QueryFactory.buildQuery(ActorDeath, seventies));
+        Dataset seventiesAlive = engine.executeQuery(QueryFactory.buildQuery(ActorNotDeath, seventies));
+        modelBuilder.buildModel(seventiesDead, seventiesAlive, seventies);
 
         // 1980s
-        Dataset eightiesDead = engine.executeQuery(Queries.getActorDiedBeforeReleaseQuery(1980, 1990));
-        Dataset eightiesAlive = engine.executeQuery(Queries.getActorNotDiedBeforeReleaseQuery(1980, 1990));
-        modelBuilder.buildModel(eightiesDead, eightiesAlive, 1980, 1990);
+        Dataset eightiesDead = engine.executeQuery(QueryFactory.buildQuery(ActorDeath, eighties));
+        Dataset eightiesAlive = engine.executeQuery(QueryFactory.buildQuery(ActorNotDeath, eighties));
+        modelBuilder.buildModel(eightiesDead, eightiesAlive, eighties);
 
         // 1990s
-        Dataset ninetiesDead = engine.executeQuery(Queries.getActorDiedBeforeReleaseQuery(1990, 2000));
-        Dataset ninetiesAlive = engine.executeQuery(Queries.getActorNotDiedBeforeReleaseQuery(1990, 2000));
-        modelBuilder.buildModel(ninetiesDead, ninetiesAlive, 1990, 2000);
+        Dataset ninetiesDead = engine.executeQuery(QueryFactory.buildQuery(ActorDeath, nineties));
+        Dataset ninetiesAlive = engine.executeQuery(QueryFactory.buildQuery(ActorNotDeath, nineties));
+        modelBuilder.buildModel(ninetiesDead, ninetiesAlive, nineties);
 
         // 2000s
-        Dataset zerosDead = engine.executeQuery(Queries.getActorDiedBeforeReleaseQuery(2000, 2010));
-        Dataset zerosAlive = engine.executeQuery(Queries.getActorNotDiedBeforeReleaseQuery(2000, 2010));
-        modelBuilder.buildModel(zerosDead, zerosAlive, 2000, 2010);
+        Dataset zerosDead = engine.executeQuery(QueryFactory.buildQuery(ActorDeath, zeroes));
+        Dataset zerosAlive = engine.executeQuery(QueryFactory.buildQuery(ActorNotDeath, zeroes));
+        modelBuilder.buildModel(zerosDead, zerosAlive, zeroes);
 
         // 2010s
-        Dataset tensDead = engine.executeQuery(Queries.getActorDiedBeforeReleaseQuery(2010, 2020));
-        Dataset tensAlive = engine.executeQuery(Queries.getActorNotDiedBeforeReleaseQuery(2010, 2020));
-        modelBuilder.buildModel(tensDead, tensAlive, 2010, 2020);
+        Dataset tensDead = engine.executeQuery(QueryFactory.buildQuery(ActorDeath, tens));
+        Dataset tensAlive = engine.executeQuery(QueryFactory.buildQuery(ActorNotDeath, tens));
+        modelBuilder.buildModel(tensDead, tensAlive, tens);
 
         // All time
-        Dataset allTimeDead = engine.executeQuery(Queries.getActorDiedBeforeReleaseQuery(0, 2020));
-        Dataset allTimeAlive = engine.executeQuery(Queries.getActorNotDiedBeforeReleaseQuery(0, 2020));
-        modelBuilder.buildModel(allTimeDead, allTimeAlive, 0, 2020);
+        Dataset allTimeDead = engine.executeQuery(QueryFactory.buildQuery(ActorDeath, allTime));
+        Dataset allTimeAlive = engine.executeQuery(QueryFactory.buildQuery(ActorNotDeath, allTime));
+        modelBuilder.buildModel(allTimeDead, allTimeAlive, allTime);
     }
 
     private static void performanceOfActorPairs(QueryEngine engine) {
         IModelBuilder modelBuilder = new ActorPairAnalysis();
 
         // 1960s
-        Dataset sixtiesActorPairs = engine.executeQuery(Queries.getActorPairsQuery(1960, 1970));
-        Dataset sixtiesIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(1960, 1970));
-        modelBuilder.buildModel(sixtiesActorPairs, sixtiesIndividualActors, 1960, 1970);
+        Dataset sixtiesActorPairs = engine.executeQuery(QueryFactory.buildQuery(ActorPair, sixties));
+        Dataset sixtiesIndividualActors = engine.executeQuery(QueryFactory.buildQuery(ActorIndividual, sixties));
+        modelBuilder.buildModel(sixtiesActorPairs, sixtiesIndividualActors, sixties);
 
         // 1970s
-        Dataset seventiesActorPairs = engine.executeQuery(Queries.getActorPairsQuery(1970, 1980));
-        Dataset seventiesIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(1970, 1980));
-        modelBuilder.buildModel(seventiesActorPairs, seventiesIndividualActors, 1970, 1980);
+        Dataset seventiesActorPairs = engine.executeQuery(QueryFactory.buildQuery(ActorPair, seventies));
+        Dataset seventiesIndividualActors = engine.executeQuery(QueryFactory.buildQuery(ActorIndividual, seventies));
+        modelBuilder.buildModel(seventiesActorPairs, seventiesIndividualActors, seventies);
 
         // 1980s
-        Dataset eightiesActorPairs = engine.executeQuery(Queries.getActorPairsQuery(1980, 1990));
-        Dataset eightiesIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(1980, 1990));
-        modelBuilder.buildModel(eightiesActorPairs, eightiesIndividualActors, 1980, 1990);
+        Dataset eightiesActorPairs = engine.executeQuery(QueryFactory.buildQuery(ActorPair, eighties));
+        Dataset eightiesIndividualActors = engine.executeQuery(QueryFactory.buildQuery(ActorIndividual, eighties));
+        modelBuilder.buildModel(eightiesActorPairs, eightiesIndividualActors, eighties);
 
         // 1990s
-        Dataset ninetiesActorPairs = engine.executeQuery(Queries.getActorPairsQuery(1990, 2000));
-        Dataset ninetiesIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(1990, 2000));
-        modelBuilder.buildModel(ninetiesActorPairs, ninetiesIndividualActors, 1990, 2000);
+        Dataset ninetiesActorPairs = engine.executeQuery(QueryFactory.buildQuery(ActorPair, nineties));
+        Dataset ninetiesIndividualActors = engine.executeQuery(QueryFactory.buildQuery(ActorIndividual, nineties));
+        modelBuilder.buildModel(ninetiesActorPairs, ninetiesIndividualActors, nineties);
 
         // 2000s
-        Dataset zerosActorPairs = engine.executeQuery(Queries.getActorPairsQuery(2000, 2010));
-        Dataset zerosIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(2000, 2010));
-        modelBuilder.buildModel(zerosActorPairs, zerosIndividualActors, 2000, 2010);
+        Dataset zerosActorPairs = engine.executeQuery(QueryFactory.buildQuery(ActorPair, zeroes));
+        Dataset zerosIndividualActors = engine.executeQuery(QueryFactory.buildQuery(ActorIndividual, zeroes));
+        modelBuilder.buildModel(zerosActorPairs, zerosIndividualActors, zeroes);
 
         // 2010s
-        Dataset tensActorPairs = engine.executeQuery(Queries.getActorPairsQuery(2010, 2020));
-        Dataset tensIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(2010, 2020));
-        modelBuilder.buildModel(tensActorPairs, tensIndividualActors, 2010, 2020);
+        Dataset tensActorPairs = engine.executeQuery(QueryFactory.buildQuery(ActorPair, tens));
+        Dataset tensIndividualActors = engine.executeQuery(QueryFactory.buildQuery(ActorIndividual, tens));
+        modelBuilder.buildModel(tensActorPairs, tensIndividualActors, tens);
 
         // All time
-        Dataset allTimeActorPairs = engine.executeQuery(Queries.getActorPairsQuery(0, 2020));
-        Dataset allTimeIndividualActors = engine.executeQuery(Queries.getActorAverageRatingQuery(0, 2020));
-        modelBuilder.buildModel(allTimeActorPairs, allTimeIndividualActors, 0, 2020);
+        Dataset allTimeActorPairs = engine.executeQuery(QueryFactory.buildQuery(ActorPair, allTime));
+        Dataset allTimeIndividualActors = engine.executeQuery(QueryFactory.buildQuery(ActorIndividual, allTime));
+        modelBuilder.buildModel(allTimeActorPairs, allTimeIndividualActors, allTime);
     }
 
     private static void analysisActorPerformanceForPrimaryGenre(QueryEngine engine) {
         IModelBuilder modelBuilder = new PrimaryGenreAnalysis();
 
-        Dataset genres = engine.executeQuery(Queries.getActorsGenres(1980, 2020));
-        modelBuilder.buildModel(genres, null, 1980, 2020);
+        Dataset genres = engine.executeQuery(QueryFactory.buildQuery(PrimaryGenre, zeroes));
+        modelBuilder.buildModel(genres, null, zeroes);
     }
 }

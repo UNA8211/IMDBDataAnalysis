@@ -1,6 +1,7 @@
 package Modeling.Builders;
 
 import Modeling.ActorPair;
+import Modeling.TimeSpan;
 import QueryEngine.Dataset;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public class ModelBuilderBase implements IModelBuilder {
     }
 
     @Override
-    public void buildModel(Dataset dataset1, Dataset dataset2, Integer startYear, Integer endYear) {
+    public void buildModel(Dataset dataset1, Dataset dataset2, TimeSpan timeSpan) {
         // NOP
     }
 
