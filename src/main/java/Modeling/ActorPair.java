@@ -1,3 +1,5 @@
+package Modeling;
+
 public class ActorPair implements Comparable<ActorPair> {
 
     public final String actor1;

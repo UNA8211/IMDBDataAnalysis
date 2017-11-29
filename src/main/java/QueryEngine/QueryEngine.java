@@ -1,10 +1,12 @@
+package QueryEngine;
+
 import java.sql.*;
 
 public class QueryEngine {
 
     private Connection connection;
 
-    QueryEngine() {
+    public QueryEngine() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://35.197.99.197:3306/movie";
