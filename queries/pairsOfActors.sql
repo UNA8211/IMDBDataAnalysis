@@ -1,3 +1,4 @@
+-- Find all pairs of actors
 SELECT
   actor1.nConst,
   actor2.nConst,

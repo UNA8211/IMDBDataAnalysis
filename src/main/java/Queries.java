@@ -7,7 +7,7 @@ public final class Queries {
             "WHERE p2.primaryTitle LIKE p1.primaryTitle + '%' " +
             "LIMIT 1000";
 
-    public static String getActorDiedBeforeRelease(int startYear, int endYear) {
+    public static String getActorDiedBeforeReleaseQuery(int startYear, int endYear) {
         return "SELECT\n" +
                 "  primaryName,\n" +
                 "  deathYear,\n" +
@@ -48,6 +48,30 @@ public final class Queries {
                 "  AND titleType = 'movie'\n" +
                 "  AND adult = 0\n" +
                 "ORDER BY primaryName ASC";
+    }
+
+    public static String getActorPairsQuery(int startYear, int endYear) {
+        return "SELECT\n" +
+                "  actor1.nConst,\n" +
+                "  actor2.nConst,\n" +
+                "  averageRating\n" +
+                "FROM ((SELECT\n" +
+                "         nConst,\n" +
+                "         tConst\n" +
+                "       FROM Person\n" +
+                "         NATURAL JOIN Acts_In) AS actor1\n" +
+                "  JOIN (SELECT\n" +
+                "          nConst,\n" +
+                "          tConst\n" +
+                "        FROM Person\n" +
+                "          NATURAL JOIN Acts_In) AS actor2\n" +
+                "    ON actor1.tConst = actor2.tConst AND actor1.nConst != actor2.nConst)\n" +
+                "  LEFT JOIN Production\n" +
+                "    ON Production.startYear > " + startYear + "\n" +
+                "       AND Production.startYear < " + endYear + "\n" +
+                "       AND actor1.tConst = Production.tConst\n" +
+                "  JOIN Ratings ON Production.tConst = Ratings.tConst\n" +
+                "LIMIT 10000";
     }
 
     public static String actorsPrimaryGenre = "" +

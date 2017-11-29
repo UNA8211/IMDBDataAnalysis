@@ -1,3 +1,4 @@
+-- Movies where an actor died prior to release
 SELECT
   primaryName,
   deathYear,
@@ -17,6 +18,7 @@ WHERE
   AND adult = 0
 ORDER BY primaryName ASC;
 
+-- Movies where no actors died prior to release
 SELECT
   primaryName,
   deathYear,
