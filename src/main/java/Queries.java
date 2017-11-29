@@ -10,6 +10,7 @@ public final class Queries {
             "SELECT\n" +
             "  primaryName,\n" +
             "  deathYear,\n" +
+            "  Production.tConst, \n" +
             "  primaryTitle,\n" +
             "  startYear,\n" +
             "  averageRating\n" +
@@ -24,7 +25,8 @@ public final class Queries {
             "  AND startYear > deathYear\n" +
             "  AND titleType = 'movie'\n" +
             "  AND adult = 0\n" +
-            "ORDER BY primaryName ASC";
+            "ORDER BY primaryName ASC " +
+            "limit 100";
 
     public static String actorNotDiedBeforeRelease = "" +
             "SELECT\n" +

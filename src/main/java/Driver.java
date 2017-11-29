@@ -12,12 +12,13 @@ public class Driver {
         results.print();
         engine.closeConnection();
 
-//        List<JSONObject> movies = new ArrayList<>();
-//        for (List<String> line : results) {
-//            movies.add(JSONEngine.readJsonFromUrl(line.get(2)));
-//        }
-//        for (JSONObject j : movies) {
-//            System.out.println(j.toString());
-//        }
+        JSONEngine jsonEngine = new JSONEngine();
+        List<JSONObject> movies = new ArrayList<>();
+        for (List<String> line : results) {
+            movies.add(jsonEngine.readJsonFromUrl(line.get(2)));
+        }
+        for (JSONObject j : movies) {
+            System.out.println(j.toString());
+        }
     }
 }
