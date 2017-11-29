@@ -2,7 +2,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Dataset extends ArrayList<List<String>> {
@@ -28,7 +27,6 @@ public class Dataset extends ArrayList<List<String>> {
             for (int i = 1; i <= columnCount; i++) {
                 columns[i - 1] = metaData.getColumnName(i);
             }
-            System.out.println(Arrays.toString(columns));
 
             while (resultSet.next()) {
                 List<String> values = new ArrayList<>(columnCount);

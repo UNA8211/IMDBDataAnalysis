@@ -1,3 +1,4 @@
+@SuppressWarnings("WeakerAccess")
 public final class Queries {
 
     public static String sequels = "" +
@@ -28,24 +29,50 @@ public final class Queries {
             "ORDER BY primaryName ASC " +
             "limit 100";
 
-    public static String actorNotDiedBeforeRelease = "" +
-            "SELECT\n" +
-            "  primaryName,\n" +
-            "  deathYear,\n" +
-            "  primaryTitle,\n" +
-            "  startYear,\n" +
-            "  averageRating\n" +
-            "FROM Person\n" +
-            "  NATURAL JOIN Acts_In\n" +
-            "  NATURAL JOIN Production\n" +
-            "  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst\n" +
-            "WHERE\n" +
-            "  averageRating IS NOT NULL\n" +
-            "  AND (deathYear IS NULL OR startYear < deathYear)\n" +
-            "  AND startYear > 1980\n" +
-            "  AND titleType = 'movie'\n" +
-            "  AND adult = 0\n" +
-            "ORDER BY primaryName ASC";
+    public static String getActorNotDiedBeforeReleaseQuery(int startYear, int endYear) {
+        return "SELECT\n" +
+                "  primaryName,\n" +
+                "  deathYear,\n" +
+                "  primaryTitle,\n" +
+                "  startYear,\n" +
+                "  averageRating\n" +
+                "FROM Person\n" +
+                "  NATURAL JOIN Acts_In\n" +
+                "  NATURAL JOIN Production\n" +
+                "  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst\n" +
+                "WHERE\n" +
+                "  averageRating IS NOT NULL\n" +
+                "  AND (deathYear IS NULL OR startYear < deathYear)\n" +
+                "  AND startYear > " + startYear + "\n" +
+                "  AND startYear < " + endYear + "\n" +
+                "  AND titleType = 'movie'\n" +
+                "  AND adult = 0\n" +
+                "ORDER BY primaryName ASC";
+    }
+
+    public static String getActorPairsQuery(int startYear, int endYear) {
+        return "SELECT\n" +
+                "  actor1.nConst,\n" +
+                "  actor2.nConst,\n" +
+                "  averageRating\n" +
+                "FROM ((SELECT\n" +
+                "         nConst,\n" +
+                "         tConst\n" +
+                "       FROM Person\n" +
+                "         NATURAL JOIN Acts_In) AS actor1\n" +
+                "  JOIN (SELECT\n" +
+                "          nConst,\n" +
+                "          tConst\n" +
+                "        FROM Person\n" +
+                "          NATURAL JOIN Acts_In) AS actor2\n" +
+                "    ON actor1.tConst = actor2.tConst AND actor1.nConst != actor2.nConst)\n" +
+                "  LEFT JOIN Production\n" +
+                "    ON Production.startYear > " + startYear + "\n" +
+                "       AND Production.startYear < " + endYear + "\n" +
+                "       AND actor1.tConst = Production.tConst\n" +
+                "  JOIN Ratings ON Production.tConst = Ratings.tConst\n" +
+                "LIMIT 10000";
+    }
 
     public static String actorsPrimaryGenre = "" +
             "SELECT COUNT(primaryName) " +

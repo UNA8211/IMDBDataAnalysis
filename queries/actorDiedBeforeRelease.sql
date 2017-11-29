@@ -1,3 +1,4 @@
+-- Movies where an actor died prior to release
 SELECT
   primaryName,
   deathYear,
@@ -11,12 +12,13 @@ FROM Person
 WHERE
   deathYear IS NOT NULL
   AND averageRating IS NOT NULL
-  AND deathYear > 1980
+  AND startYear > 1980
   AND startYear > deathYear
   AND titleType = 'movie'
   AND adult = 0
 ORDER BY primaryName ASC;
 
+-- Movies where no actors died prior to release
 SELECT
   primaryName,
   deathYear,
