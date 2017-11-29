@@ -8,8 +8,10 @@ import java.util.*;
 
 public class ActorPairAnalysis extends ModelBuilderBase {
 
-    public ActorPairAnalysis() {
+    private int minFrequency;
 
+    public ActorPairAnalysis(int minFrequency) {
+        this.minFrequency = minFrequency;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class ActorPairAnalysis extends ModelBuilderBase {
 
         // Remove pairs with a frequency less than 3
         List<ActorPair> frequentPairs = new ArrayList<>(pairs.values());
-        frequentPairs.removeIf(element -> element.getCount() < 3);
+        frequentPairs.removeIf(element -> element.getCount() < minFrequency);
 
         HashMap<String, Float> avgRatings = new HashMap<>();
         averageActorRatings.forEach(element -> avgRatings.put(element.get(0), Float.parseFloat(element.get(1))));

@@ -20,11 +20,11 @@ public class Driver {
 
     public static void main(String[] args) {
         QueryEngine queryEngine = new QueryEngine();
-        actorDiedBeforeMovieRelease(queryEngine);
+        analyzePerformanceOfFrequentActorPairs(queryEngine);
         queryEngine.closeConnection();
     }
 
-    private static void actorDiedBeforeMovieRelease(QueryEngine engine) {
+    private static void analyzeActorDiedBeforeMovieRelease(QueryEngine engine) {
         IModelBuilder modelBuilder = new ActorDeathAnalysis();
 
         // 1960s
@@ -63,8 +63,8 @@ public class Driver {
         modelBuilder.buildModel(allTimeDead, allTimeAlive, allTime);
     }
 
-    private static void performanceOfActorPairs(QueryEngine engine) {
-        IModelBuilder modelBuilder = new ActorPairAnalysis();
+    private static void analyzePerformanceOfFrequentActorPairs(QueryEngine engine) {
+        IModelBuilder modelBuilder = new ActorPairAnalysis(5);
 
         // 1960s
         Dataset sixtiesActorPairs = engine.executeQuery(QueryFactory.buildQuery(ActorPair, sixties));
