@@ -20,7 +20,7 @@ public class Driver {
 
     public static void main(String[] args) {
         QueryEngine queryEngine = new QueryEngine();
-        analyzePerformanceOfFrequentActorPairs(queryEngine);
+        analysisActorPerformanceForPrimaryGenre(queryEngine);
         queryEngine.closeConnection();
     }
 
