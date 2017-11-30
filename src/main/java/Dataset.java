@@ -41,6 +41,14 @@ public class Dataset extends ArrayList<List<String>> {
         }
     }
 
+    public void addCol(List<String> vals) {
+        int i = 0;
+        for (List<String> row : this) {
+            row.add(vals.get(i));
+            i++;
+        }
+    }
+
     public void print() {
         this.forEach(set -> System.out.println(set.toString()));
     }

@@ -2,17 +2,12 @@ public class Driver {
 
     public static void main(String[] args) {
         QueryEngine engine = new QueryEngine();
-        performanceOfActorPairs(engine);
-        engine.closeConnection();
-
         JSONEngine jsonEngine = new JSONEngine();
-        List<JSONObject> movies = new ArrayList<>();
-        for (List<String> line : results) {
-            movies.add(jsonEngine.readJsonFromUrl(line.get(2)));
-        }
-        for (JSONObject j : movies) {
-            System.out.println(j.toString());
-        }
+        //performanceOfActorPairs(engine);
+        String awards = jsonEngine.readJsonFromUrl("tt0848228").getString("Awards");
+        System.out.println(awards);
+        System.out.println(Utils.pullAwardData(awards).toString());
+        engine.closeConnection();
     }
 
     private static void actorDiedBeforeMovieRelease(QueryEngine engine) {
@@ -55,5 +50,9 @@ public class Driver {
     private static void performanceOfActorPairs(QueryEngine engine) {
         Dataset actorPairs = engine.executeQuery(Queries.getActorPairsQuery(2000, 2020));
         Analysis.actorPairs(actorPairs, 2000, 2020);
+    }
+
+    private static void awardsPrediction(QueryEngine engine) {
+
     }
 }
