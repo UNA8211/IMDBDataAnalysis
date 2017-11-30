@@ -29,6 +29,22 @@ public final class Queries {
                 "ORDER BY primaryName ASC";
     }
 
+    public static String getAwardDataQuery() {
+        return "SELECT \n" +
+                "  tConst,\n" +
+                "  startYear,\n" +
+                "  runTime,\n" +
+                "  budget,\n" +
+                "  revenue,\n" +
+                "  averageRating,\n" +
+                "  numVotes\n" +
+                "FROM Production\n" +
+                "  NATURAL JOIN Finances\n" +
+                "  NATURAL JOIN Ratings\n" +
+                "ORDER BY tConst " +
+                "LIMIT 300";
+    }
+
     public static String getActorNotDiedBeforeReleaseQuery(int startYear, int endYear) {
         return "SELECT\n" +
                 "  primaryName,\n" +
