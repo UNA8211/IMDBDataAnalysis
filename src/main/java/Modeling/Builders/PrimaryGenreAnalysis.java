@@ -17,13 +17,14 @@ public class PrimaryGenreAnalysis extends ModelBuilderBase {
 
     @Override
     public void buildModel(Dataset actorGenres, Dataset ignored, TimeSpan timeSpan) {
-        System.out.println("Begin analysis");
+        // Parse dataset and collect actor entities as a HashMap
         HashMap<String, Actor> actors = new HashMap<>();
         actorGenres.parallelStream().forEachOrdered(example -> {
             String nConst = example.get(0);
             String genre = example.get(1);
             double rating = Double.parseDouble(example.get(2));
 
+            // If the actor already exists update, otherwise create new
             Actor existing = actors.get(nConst);
             if (existing == null) {
                 actors.put(nConst, new Actor(nConst, genre, rating));
@@ -32,6 +33,8 @@ public class PrimaryGenreAnalysis extends ModelBuilderBase {
             }
         });
 
+        // Compute average actor performance with respect to particular genres,
+        // Filter the set if the actor does not meet the criteria
         List<Actor> actorList = new ArrayList<>(actors.values());
         actorList.forEach(Actor::computeAverages);
         actorList.removeIf(actor -> actor.getOtherGenresRating() < 1
@@ -39,6 +42,7 @@ public class PrimaryGenreAnalysis extends ModelBuilderBase {
                 || actor.getPrimaryPercentage() < minPercentage
                 || actor.getPrimaryPercentage() > maxPercentage);
 
+        // Compute means
         double avgPrimaryRating = 0.0;
         double avgOtherRating = 0.0;
         for (Actor actor : actorList) {
@@ -48,6 +52,7 @@ public class PrimaryGenreAnalysis extends ModelBuilderBase {
         avgPrimaryRating /= actorList.size();
         avgOtherRating /= actorList.size();
 
+        // Compute standard deviations
         double primaryRatingStdDev = 0.0;
         double otherRatingStdDev = 0.0;
         for (Actor actor : actorList) {

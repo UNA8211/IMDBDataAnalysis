@@ -112,7 +112,7 @@ public class Driver {
     }
 
     private static void awardsPrediction(QueryEngine queryEngine, JSONEngine jsonEngine) {
-        IModelBuilder modelBuilder = new AwardPredictionAnalysis();
+        IModelBuilder modelBuilder = new AwardPrediction();
         Dataset movies = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.Awards, zeroes));
 
         System.out.println("Begin fetch");

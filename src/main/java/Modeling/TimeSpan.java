@@ -1,6 +1,7 @@
 package Modeling;
 
 public class TimeSpan {
+
     public final int startYear;
     public final int endYear;
 

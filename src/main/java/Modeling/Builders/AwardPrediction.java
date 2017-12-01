@@ -5,13 +5,13 @@ import QueryEngine.Dataset;
 import Utilities.Utils;
 import weka.classifiers.lazy.IBk;
 
-public class AwardPredictionAnalysis extends ModelBuilderBase {
+public class AwardPrediction extends ModelBuilderBase {
 
     private final String[] attributes = {"year", "DATE", "runtime",
             "NUMERIC", "budget", "NUMERIC", "revenue", "NUMERIC", "averagerating", "NUMERIC", "numvotes", "NUMERIC",
             "class", "NUMERIC", "nominations", "NUMERIC"};
 
-    public AwardPredictionAnalysis() {
+    public AwardPrediction() {
 
     }
 

@@ -73,17 +73,6 @@ public class Actor {
         return avgRating;
     }
 
-    private double compute() {
-        if (primaryGenre == null) {
-            computePrimaryGenre();
-        }
-        return this.genres.get(primaryGenre).rating;
-    }
-
-    public String getNConst() {
-        return this.nConst;
-    }
-
     private void computePrimaryGenre() {
         String primaryGenre = null;
         int primaryCount = 0;

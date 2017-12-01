@@ -16,7 +16,7 @@ public class ActorPairAnalysis extends ModelBuilderBase {
 
     @Override
     public void buildModel(Dataset actorPairs, Dataset averageActorRatings, TimeSpan timeSpan) {
-        // Collect pairs in hash table computing average ratings
+        // Parsing the SQL dataset, collect actor pairs as a HashMap
         HashMap<Integer, ActorPair> pairs = new HashMap<>();
         actorPairs.parallelStream().forEachOrdered(actorPair -> {
             String actor1 = actorPair.get(0);
@@ -24,6 +24,7 @@ public class ActorPairAnalysis extends ModelBuilderBase {
             Float rating = Float.parseFloat(actorPair.get(2));
             ActorPair pair = new ActorPair(actor1, actor2, rating);
 
+            // Add a new entry if the pair doesn't exist, else update the existing pair with the occurrence's rating
             ActorPair result = pairs.get(pair.hashCode());
             if (result == null) {
                 pairs.put(pair.hashCode(), pair);
@@ -32,14 +33,16 @@ public class ActorPairAnalysis extends ModelBuilderBase {
             }
         });
 
-        // Remove pairs with a frequency less than 3
+        // Remove pairs with a frequency less than minFrequency
         List<ActorPair> frequentPairs = new ArrayList<>(pairs.values());
         frequentPairs.removeIf(element -> element.getCount() < minFrequency);
 
+        // Create a HashMap to look up the average rating of a given actor
         HashMap<String, Float> avgRatings = new HashMap<>();
         averageActorRatings.forEach(element -> avgRatings.put(element.get(0), Float.parseFloat(element.get(1))));
 
-        frequentPairs.forEach(pair -> {
+        // Set the pair and individual ratings of each actor / actor pair
+        frequentPairs.parallelStream().forEach(pair -> {
             // Get avg quality of actor 1
             Float actor1AvgRating = avgRatings.get(pair.actor1);
             Float actor2AvgRating = avgRatings.get(pair.actor2);

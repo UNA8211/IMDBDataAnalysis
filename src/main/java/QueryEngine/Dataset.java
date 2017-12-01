@@ -3,6 +3,10 @@ package QueryEngine;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Dataset Class serves as a collection of entries retrieved from an SQL query, or built from a file.
+ * Serves as a wrapper of a list of rows where each row is a list of the column values in the result table.
+ */
 public class Dataset extends ArrayList<List<String>> {
 
     public Dataset() {
@@ -20,6 +24,7 @@ public class Dataset extends ArrayList<List<String>> {
         super(dataset);
     }
 
+    // Convert an SQL result set into dataset format
     public Dataset(ResultSet resultSet) {
         try {
             ResultSetMetaData metaData = resultSet.getMetaData();

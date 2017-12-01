@@ -14,7 +14,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("WeakerAccess")
 public class ModelBuilderBase implements IModelBuilder {
 
     protected double accuracyRequirement = 2.0;
@@ -65,6 +64,35 @@ public class ModelBuilderBase implements IModelBuilder {
         System.out.println("\n\n");
     }
 
+    protected void computeStats(List<ActorPair> pairs) {
+        // Sample means
+        double combinedMean = 0.0;
+        double individualMean = 0.0;
+
+        for (ActorPair pair : pairs) {
+            combinedMean += pair.getCombinedActorQuality();
+            individualMean += pair.getAvgIndividualActorQuality();
+        }
+
+        combinedMean /= pairs.size();
+        individualMean /= pairs.size();
+
+        // Sample standard deviations
+        double combinedStd = 0.0;
+        double individualStd = 0.0;
+
+        for (ActorPair pair : pairs) {
+            combinedStd += Math.pow(pair.getCombinedActorQuality() - combinedMean, 2);
+            individualStd += Math.pow(pair.getAvgIndividualActorQuality() - individualMean, 2);
+        }
+
+        combinedStd = Math.sqrt(combinedStd / pairs.size());
+        individualStd = Math.sqrt(individualStd / pairs.size());
+
+        System.out.println("Combined: " + combinedMean + ", (" + combinedStd + ")");
+        System.out.println("Individual: " + individualMean + ", (" + individualStd + ")");
+    }
+
     private double computeFold(Classifier classifier) {
         try {
             ArffLoader trainingLoader = new ArffLoader();
@@ -93,46 +121,12 @@ public class ModelBuilderBase implements IModelBuilder {
                 total++;
             }
 
-            double accuracy = (correct / (double) total);
-//            System.out.println("CORRECT CLASSIFICATIONS: " + correct);
-//            System.out.println("TOTAL CLASSIFICATIONS:   " + total);
-//            System.out.println("CLASSIFICATION ACCURACY: " + (accuracy * 100) + "%");
-
-            return accuracy;
+            return (correct / (double) total);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return -1;
-    }
-
-    protected void computeStats(List<ActorPair> pairs) {
-        // Sample means
-        double combinedMean = 0.0;
-        double individualMean = 0.0;
-
-        for (ActorPair pair : pairs) {
-            combinedMean += pair.getCombinedActorQuality();
-            individualMean += pair.getAvgIndividualActorQuality();
-        }
-
-        combinedMean /= pairs.size();
-        individualMean /= pairs.size();
-
-        // Sample standard deviations
-        double combinedStd = 0.0;
-        double individualStd = 0.0;
-
-        for (ActorPair pair : pairs) {
-            combinedStd += Math.pow(pair.getCombinedActorQuality() - combinedMean, 2);
-            individualStd += Math.pow(pair.getAvgIndividualActorQuality() - individualMean, 2);
-        }
-
-        combinedStd = Math.sqrt(combinedStd / pairs.size());
-        individualStd = Math.sqrt(individualStd / pairs.size());
-
-        System.out.println("Combined: " + combinedMean + ", (" + combinedStd + ")");
-        System.out.println("Individual: " + individualMean + ", (" + individualStd + ")");
     }
 }
