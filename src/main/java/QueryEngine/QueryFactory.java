@@ -15,7 +15,7 @@ public class QueryFactory {
             case ActorIndividual:
                 return getActorAverageRatingQuery(timeSpan.startYear, timeSpan.endYear);
             case Awards:
-                return null;
+                return getAwardDataQuery();
             case Sequels:
                 return getSequelsQuery();
             case PrimaryGenre:
@@ -134,7 +134,6 @@ public class QueryFactory {
                 "      WHERE adult = 0\n" +
                 "            AND startYear > " + startYear + "\n" +
                 "            AND startYear < " + endYear + "\n" +
-                //        "            AND titleType = 'movie'\n" +
                 "     ) AS ratings\n" +
                 "GROUP BY nConst\n";
     }
@@ -154,7 +153,25 @@ public class QueryFactory {
                 "    ON (Acts_In.tConst = Production.tConst\n" +
                 "        AND adult = 0\n" +
                 "        AND titleType = 'movie'\n" +
-                "        AND Production.startYear > 1980)\n" +
+                "        AND Production.startYear > " + startYear + "\n" +
+                "        AND Production.startYear < " + endYear + ")\n" +
                 "LIMIT 1000000";
     }
+
+    private static String getAwardDataQuery() {
+        return "SELECT \n" +
+                "  tConst,\n" +
+                "  startYear,\n" +
+                "  runTime,\n" +
+                "  budget,\n" +
+                "  revenue,\n" +
+                "  averageRating,\n" +
+                "  numVotes\n" +
+                "FROM Production\n" +
+                "  NATURAL JOIN Finances\n" +
+                "  NATURAL JOIN Ratings\n" +
+                "ORDER BY tConst " +
+                "LIMIT 1000";
+    }
+
 }

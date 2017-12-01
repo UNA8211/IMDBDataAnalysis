@@ -27,7 +27,7 @@ public class Driver {
         JSONEngine jsonEngine = new JSONEngine();
         //analyzeActorDiedBeforeMovieRelease(queryEngine);
         awardsPrediction(queryEngine, jsonEngine);
-        analysisActorPerformanceForPrimaryGenre(queryEngine);
+        //analysisActorPerformanceForPrimaryGenre(queryEngine);
         queryEngine.closeConnection();
     }
 
@@ -117,7 +117,8 @@ public class Driver {
 
     private static void awardsPrediction(QueryEngine queryEngine, JSONEngine jsonEngine) {
         IModelBuilder modelBuilder = new AwardPredictionAnalysis();
-        Dataset movies = queryEngine.executeQuery(Queries.getAwardDataQuery());
+        Dataset movies = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.Awards, zeroes));
+
         for (List<String> movie : movies) {
             try {
                 movie.addAll(Utils.pullAwardData(jsonEngine.readJsonFromUrl(movie.get(0)).getString("Awards")));
@@ -126,8 +127,8 @@ public class Driver {
             }
         }
 
-        Dataset training = new Dataset(movies.subList(0, (movies.size() * 3)/4));
-        Dataset classifying = new Dataset(movies.subList((movies.size() * 3)/4, movies.size()));
+        Dataset training = new Dataset(movies.subList(0, (movies.size() * 3) / 4));
+        Dataset classifying = new Dataset(movies.subList((movies.size() * 3) / 4, movies.size()));
 
         modelBuilder.buildModel(training, classifying, zeroes);
     }
