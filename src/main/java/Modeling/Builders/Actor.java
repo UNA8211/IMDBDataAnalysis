@@ -8,6 +8,8 @@ public class Actor {
     private HashMap<String, Genre> genres;
 
     private String primaryGenre;
+    private double primaryGenreRating;
+    private double otherGenreRating;
 
     public Actor(String nConst, String genre, double rating) {
         this.nConst = nConst;
@@ -24,7 +26,21 @@ public class Actor {
         }
     }
 
-    public double getNonPrimaryGenreRating() {
+    public void computeAverages() {
+        this.primaryGenreRating = getPrimaryGenreRating();
+        this.otherGenreRating = getNonPrimaryGenreRating();
+    }
+
+    public double getPrimaryGenreRating() {
+        return this.primaryGenreRating;
+    }
+
+    public double getOtherGenresRating() {
+        return this.otherGenreRating;
+    }
+
+
+    private double getNonPrimaryGenreRating() {
         if (primaryGenre == null) {
             computePrimaryGenre();
         }
@@ -42,7 +58,7 @@ public class Actor {
         return avgRating;
     }
 
-    public double getPrimaryGenreRating() {
+    private double compute() {
         if (primaryGenre == null) {
             computePrimaryGenre();
         }
