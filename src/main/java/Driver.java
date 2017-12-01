@@ -107,7 +107,7 @@ public class Driver {
 
     private static void analysisActorPerformanceForPrimaryGenre(QueryEngine engine) {
         IModelBuilder modelBuilder = new PrimaryGenreAnalysis(0.5, 0.7);
-        Dataset genres = DatasetBuilder.buildDataset("datasets/primaryGenre.tsv");//engine.executeQuery(QueryFactory.buildQuery(PrimaryGenre, zeroes));
+        Dataset genres = DatasetBuilder.buildDataset("datasets/primaryGenre.tsv");  //engine.executeQuery(QueryFactory.buildQuery(PrimaryGenre, zeroes));
         modelBuilder.buildModel(genres, null, zeroes);
     }
 
@@ -119,8 +119,6 @@ public class Driver {
         JSONEngine.fetchData(jsonEngine, movies, "Awards");
         System.out.println("Fetch complete");
 
-        Dataset training = new Dataset(movies.subList(0, (movies.size() * 3) / 4));
-        Dataset classifying = new Dataset(movies.subList((movies.size() * 3) / 4, movies.size()));
-        modelBuilder.buildModel(training, classifying, zeroes);
+        modelBuilder.buildModel(movies, null, zeroes);
     }
 }

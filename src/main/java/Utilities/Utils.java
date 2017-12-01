@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
+
     public static final String AWARD_NUM_REGEX = "(\\d+)";
 
     public static List<String> pullAwardData(String awards) {
@@ -23,8 +24,9 @@ public class Utils {
 
         return awardData;
     }
+
     public static List<String> noAwards() {
-        List<String> noAwards = new ArrayList();
+        List<String> noAwards = new ArrayList<>();
         noAwards.add("0");
         noAwards.add("0");
         return noAwards;
@@ -39,7 +41,7 @@ public class Utils {
             bw = new BufferedWriter(fw);
 
             bw.write("@RELATION " + relation + "\n\n");
-            for (int i = 0; i < attrs.length - 1; i+=2) {
+            for (int i = 0; i < attrs.length - 1; i += 2) {
                 bw.write("@ATTRIBUTE " + attrs[i] + " " +
                         (attrs[i + 1].equalsIgnoreCase("date") ? "DATE \"yyyy\"" : attrs[i + 1]) + "\n");
             }
@@ -59,7 +61,7 @@ public class Utils {
                 }
 
                 if (fw != null) {
-                    bw.close();
+                    fw.close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

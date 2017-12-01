@@ -1,8 +1,7 @@
 package QueryEngine;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Dataset extends ArrayList<List<String>> {
 
@@ -11,11 +10,8 @@ public class Dataset extends ArrayList<List<String>> {
     }
 
     public Dataset(List<List<String>> data) {
-        for(List<String> line : data) {
-            List<String> adding = new ArrayList();
-            for (String s : line) {
-                adding.add(new String(s));
-            }
+        for (List<String> line : data) {
+            List<String> adding = new ArrayList<>(line);
             this.add(adding);
         }
     }
@@ -47,15 +43,15 @@ public class Dataset extends ArrayList<List<String>> {
         }
     }
 
-    public void addCol(List<String> vals) {
-        int i = 0;
-        for (List<String> row : this) {
-            row.add(vals.get(i));
-            i++;
-        }
+    public void shuffle() {
+        Collections.shuffle(this);
     }
 
-    public void print() {
-        this.forEach(set -> System.out.println(set.toString()));
+    public Dataset getTrainingSet() {
+        return new Dataset(this.subList(0, this.size() / 2));
+    }
+
+    public Dataset getTestSet() {
+        return new Dataset(this.subList(this.size() / 2, this.size()));
     }
 }
