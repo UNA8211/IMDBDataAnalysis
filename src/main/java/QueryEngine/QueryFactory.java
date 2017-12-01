@@ -173,5 +173,4 @@ public class QueryFactory {
                 "ORDER BY tConst " +
                 "LIMIT 1000";
     }
-
 }

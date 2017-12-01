@@ -1,10 +1,6 @@
 import Modeling.Builders.*;
 import Modeling.TimeSpan;
 import QueryEngine.*;
-import Utilities.Utils;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import static QueryEngine.QueryType.*;
 
@@ -119,23 +115,12 @@ public class Driver {
         IModelBuilder modelBuilder = new AwardPredictionAnalysis();
         Dataset movies = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.Awards, zeroes));
 
-        CompletableFuture results = fetchAwardData(jsonEngine, movies, "Awards");
-        try {
-            results.get();
+        System.out.println("Begin fetch");
+        JSONEngine.fetchData(jsonEngine, movies, "Awards");
+        System.out.println("Fetch complete");
 
-            Dataset training = new Dataset(movies.subList(0, (movies.size() * 3) / 4));
-            Dataset classifying = new Dataset(movies.subList((movies.size() * 3) / 4, movies.size()));
-            modelBuilder.buildModel(training, classifying, zeroes);
-
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static CompletableFuture fetchAwardData(JSONEngine jsonEngine, Dataset movies, String attribute) {
-        return CompletableFuture.allOf(movies.stream()
-                .map(movie -> CompletableFuture.supplyAsync(() ->
-                        movie.addAll(Utils.pullAwardData(jsonEngine.readJsonFromUrl(movie.get(0)).getString(attribute)))))
-                .toArray(CompletableFuture[]::new));
+        Dataset training = new Dataset(movies.subList(0, (movies.size() * 3) / 4));
+        Dataset classifying = new Dataset(movies.subList((movies.size() * 3) / 4, movies.size()));
+        modelBuilder.buildModel(training, classifying, zeroes);
     }
 }

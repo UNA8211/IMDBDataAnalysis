@@ -1,5 +1,6 @@
 package QueryEngine;
 
+import Utilities.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,6 +10,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,6 +46,17 @@ public class JSONEngine {
             return awardData;
         } catch (JSONException e) {
             return new ArrayList<String>();
+        }
+    }
+
+    public static void fetchData(JSONEngine jsonEngine, Dataset movies, String attribute) {
+        try {
+            CompletableFuture.allOf(movies.stream()
+                    .map(movie -> CompletableFuture.supplyAsync(() ->
+                            movie.addAll(Utils.pullAwardData(jsonEngine.readJsonFromUrl(movie.get(0)).getString(attribute)))))
+                    .toArray(CompletableFuture[]::new)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
     }
 }
