@@ -1,0 +1,31 @@
+using 1 nearest neighbour(s) for classification
+
+------------------------------------------------
+Average accuracy: 0.7342, StdDev: 0.009620810776644565
+
+
+
+IB1 instance-based classifier
+using 3 nearest neighbour(s) for classification
+
+------------------------------------------------
+Average accuracy: 0.7379, StdDev: 0.017328877632437723
+
+
+
+IB1 instance-based classifier
+using 5 nearest neighbour(s) for classification
+
+------------------------------------------------
+Average accuracy: 0.7316999999999999, StdDev: 0.012008746812219842
+
+
+
+IB1 instance-based classifier
+using 7 nearest neighbour(s) for classification
+
+------------------------------------------------
+Average accuracy: 0.7335999999999999, StdDev: 0.010650821564555487
+
+
+

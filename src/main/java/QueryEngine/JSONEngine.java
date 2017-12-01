@@ -48,7 +48,7 @@ public class JSONEngine {
 
     public static void fetchData(JSONEngine jsonEngine, Dataset movies, String attribute) {
         try {
-            CompletableFuture.allOf(movies.stream()
+            CompletableFuture.allOf(movies.parallelStream()
                     .map(movie -> CompletableFuture.supplyAsync(() ->
                             movie.addAll(Utils.pullAwardData(jsonEngine.readJsonFromUrl(movie.get(0)).getString(attribute)))))
                     .toArray(CompletableFuture[]::new))

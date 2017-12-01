@@ -171,6 +171,6 @@ public class QueryFactory {
                 "  NATURAL JOIN Finances\n" +
                 "  NATURAL JOIN Ratings\n" +
                 "ORDER BY tConst " +
-                "LIMIT 1000";
+                "LIMIT 2000";
     }
 }

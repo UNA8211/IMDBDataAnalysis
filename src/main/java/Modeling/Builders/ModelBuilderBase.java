@@ -27,8 +27,6 @@ public class ModelBuilderBase implements IModelBuilder {
     }
 
     protected void crossValidate(Dataset dataset, Classifier classifier, String... attributes) {
-
-        System.out.println(classifier.toString());
         List<Double> accuracies = new ArrayList<>(10);
         for (int i = 0; i < 5; i++) {
             dataset.shuffle();
@@ -58,8 +56,10 @@ public class ModelBuilderBase implements IModelBuilder {
         }
         stdDev = Math.sqrt(stdDev / accuracies.size());
 
-        System.out.println("\n------------------------------------------------");
+        System.out.println(classifier.toString());
+        System.out.println("------------------------------------------------");
         System.out.println("Average accuracy: " + avgAccuracy + ", StdDev: " + stdDev);
+        System.out.println("\n\n");
     }
 
     private double computeFold(Classifier classifier) {
@@ -91,9 +91,9 @@ public class ModelBuilderBase implements IModelBuilder {
             }
 
             double accuracy = (correct / (double) total);
-            System.out.println("CORRECT CLASSIFICATIONS: " + correct);
-            System.out.println("TOTAL CLASSIFICATIONS:   " + total);
-            System.out.println("CLASSIFICATION ACCURACY: " + (accuracy * 100) + "%");
+//            System.out.println("CORRECT CLASSIFICATIONS: " + correct);
+//            System.out.println("TOTAL CLASSIFICATIONS:   " + total);
+//            System.out.println("CLASSIFICATION ACCURACY: " + (accuracy * 100) + "%");
 
             return accuracy;
 

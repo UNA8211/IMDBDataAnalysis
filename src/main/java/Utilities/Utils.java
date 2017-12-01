@@ -3,8 +3,7 @@ package Utilities;
 import QueryEngine.Dataset;
 import QueryEngine.JSONEngine;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,5 +66,17 @@ public class Utils {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void setFileOut(String fileName) {
+        try {
+            System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(fileName.concat(".txt"), true)), true));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setConsoleOut() {
+        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
     }
 }
