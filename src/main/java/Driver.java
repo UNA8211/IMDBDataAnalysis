@@ -1,6 +1,7 @@
 import Modeling.Builders.*;
 import Modeling.TimeSpan;
 import QueryEngine.*;
+import org.json.JSONException;
 
 import java.util.List;
 
@@ -117,8 +118,17 @@ public class Driver {
         IModelBuilder modelBuilder = new AwardPredictionAnalysis();
         Dataset movies = queryEngine.executeQuery(Queries.getAwardDataQuery());
         for (List<String> movie : movies) {
-            movie.addAll(Utils.pullAwardData(jsonEngine.readJsonFromUrl(movie.get(0)).getString("Awards")));
+            try {
+                movie.addAll(Utils.pullAwardData(jsonEngine.readJsonFromUrl(movie.get(0)).getString("Awards")));
+            } catch (JSONException e) {
+                movie.addAll(Utils.noAwards());
+            }
         }
+
+        movies.print();
+
+        Utils.exportToArff(movies, "award_prediction.arff", "awards", "year", "DATE", "runtime",
+            "NUMERIC", "budget", "NUMERIC", "revenue", "NUMERIC", "averagerating", "NUMERIC", "numvotes", "NUMERIC");
 
         modelBuilder.buildModel(movies, null, zeroes);
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Dataset extends ArrayList<List<String>> {
 
-    Dataset() {
+    public Dataset() {
 
     }
 
