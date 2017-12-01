@@ -2,6 +2,8 @@ import Modeling.Builders.*;
 import Modeling.TimeSpan;
 import QueryEngine.*;
 
+import java.util.List;
+
 import static QueryEngine.QueryType.*;
 
 public class Driver {
@@ -107,5 +109,16 @@ public class Driver {
 
         Dataset genres = engine.executeQuery(QueryFactory.buildQuery(PrimaryGenre, zeroes));
         modelBuilder.buildModel(genres, null, zeroes);
+    }
+
+    private static void awardsPrediction(QueryEngine queryEngine, JSONEngine jsonEngine) {
+        IModelBuilder modelBuilder = new AwardPredictionAnalysis();
+        Dataset movies = queryEngine.executeQuery(Queries.getAwardDataQuery());
+        for (List<String> movie : movies) {
+            movie.addAll(Utils.pullAwardData(jsonEngine.readJsonFromUrl(movie.get(0)).getString("Awards")));
+        }
+
+        modelBuilder.buildModel(movies, null, zeroes);
+
     }
 }
