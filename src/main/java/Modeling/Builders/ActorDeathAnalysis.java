@@ -12,15 +12,16 @@ public class ActorDeathAnalysis extends ModelBuilderBase {
         // Get average rating of each dataset
         double avgDiedRating = 0.f;
         double avgLivingRating = 0.f;
-        int ratingIndex = died.get(0).size() - 1;
+        int diedRatingIndex = died.get(0).size() - 1;
+        int livingRatingIndex = living.get(0).size() - 1;
 
         for (List<String> example : died) {
-            avgDiedRating += Double.parseDouble(example.get(ratingIndex));
+            avgDiedRating += Double.parseDouble(example.get(diedRatingIndex));
         }
         avgDiedRating /= died.size();
 
         for (List<String> example : living) {
-            avgLivingRating += Double.parseDouble(example.get(ratingIndex));
+            avgLivingRating += Double.parseDouble(example.get(livingRatingIndex));
         }
         avgLivingRating /= living.size();
 
@@ -28,10 +29,10 @@ public class ActorDeathAnalysis extends ModelBuilderBase {
         double diedStdDev = 0.f;
         double livingStdDev = 0.f;
         for (List<String> example : died) {
-            diedStdDev += Math.pow(Double.parseDouble(example.get(ratingIndex)) - avgDiedRating, 2);
+            diedStdDev += Math.pow(Double.parseDouble(example.get(diedRatingIndex)) - avgDiedRating, 2);
         }
         for (List<String> example : living) {
-            livingStdDev += Math.pow(Double.parseDouble(example.get(ratingIndex)) - avgLivingRating, 2);
+            livingStdDev += Math.pow(Double.parseDouble(example.get(livingRatingIndex)) - avgLivingRating, 2);
         }
         diedStdDev = Math.sqrt(diedStdDev / died.size());
         livingStdDev = Math.sqrt(livingStdDev / living.size());

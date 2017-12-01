@@ -23,10 +23,10 @@ public class Driver {
     }
 
     public static void main(String[] args) {
-        JSONEngine jsonEngine = new JSONEngine();
         QueryEngine queryEngine = new QueryEngine();
+        JSONEngine jsonEngine = new JSONEngine();
+        analyzeActorDiedBeforeMovieRelease(queryEngine);
         awardsPrediction(queryEngine, jsonEngine);
-        //analyzePerformanceOfFrequentActorPairs(queryEngine);
         queryEngine.closeConnection();
     }
 
@@ -70,7 +70,7 @@ public class Driver {
     }
 
     private static void analyzePerformanceOfFrequentActorPairs(QueryEngine engine) {
-        IModelBuilder modelBuilder = new ActorPairAnalysis(5);
+        IModelBuilder modelBuilder = new ActorPairAnalysis(3);
 
         // 1960s
         Dataset sixtiesActorPairs = engine.executeQuery(QueryFactory.buildQuery(ActorPair, sixties));
@@ -110,7 +110,6 @@ public class Driver {
 
     private static void analysisActorPerformanceForPrimaryGenre(QueryEngine engine) {
         IModelBuilder modelBuilder = new PrimaryGenreAnalysis();
-
         Dataset genres = engine.executeQuery(QueryFactory.buildQuery(PrimaryGenre, zeroes));
         modelBuilder.buildModel(genres, null, zeroes);
     }
@@ -126,12 +125,9 @@ public class Driver {
             }
         }
 
-        movies.print();
-
         Dataset training = new Dataset(movies.subList(0, (movies.size() * 3)/4));
         Dataset classifying = new Dataset(movies.subList((movies.size() * 3)/4, movies.size()));
 
         modelBuilder.buildModel(training, classifying, zeroes);
-
     }
 }

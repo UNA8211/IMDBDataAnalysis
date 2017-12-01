@@ -1,38 +1,52 @@
 -- Movies where an actor died prior to release
 SELECT
-  primaryName,
-  deathYear,
   primaryTitle,
-  startYear,
   averageRating
-FROM Person
-  NATURAL JOIN Acts_In
-  NATURAL JOIN Production
-  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst
+FROM
+  (SELECT DISTINCT
+     nConst,
+     deathYear,
+     tConst,
+     averageRating
+   FROM
+     Person
+     NATURAL JOIN Acts_In
+     NATURAL JOIN Directs
+     NATURAL JOIN Writes
+     NATURAL JOIN Ratings
+   WHERE averageRating IS NOT NULL
+         AND averageRating != 0
+         AND deathYear IS NOT NULL
+         AND deathYear > 1900
+  ) AS Part
+  JOIN Production ON Part.tConst = Production.tConst
 WHERE
-  deathYear IS NOT NULL
-  AND averageRating IS NOT NULL
-  AND startYear > 1980
-  AND startYear > deathYear
-  AND titleType = 'movie'
-  AND adult = 0
-ORDER BY primaryName ASC;
+  adult = 0
+  AND startYear > 1900
+  AND startYear > deathYear;
 
 -- Movies where no actors died prior to release
 SELECT
-  primaryName,
-  deathYear,
   primaryTitle,
-  startYear,
   averageRating
-FROM Person
-  NATURAL JOIN Acts_In
-  NATURAL JOIN Production
-  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst
+FROM (
+       SELECT DISTINCT
+         nConst,
+         deathYear,
+         tConst,
+         averageRating
+       FROM
+         Person
+         NATURAL JOIN Acts_In
+         NATURAL JOIN Directs
+         NATURAL JOIN Writes
+         NATURAL JOIN Ratings
+       WHERE averageRating IS NOT NULL
+             AND averageRating != 0
+             AND deathYear IS NOT NULL
+     ) AS Part
+  JOIN Production ON Part.tConst = Production.tConst
 WHERE
-  averageRating IS NOT NULL
-  AND (deathYear IS NULL OR startYear < deathYear)
-  AND startYear > 1980
-  AND titleType = 'movie'
-  AND adult = 0
-ORDER BY primaryName ASC;
+  adult = 0
+  AND startYear > 1900
+  AND startYear < deathYear;
