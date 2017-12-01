@@ -1,6 +1,7 @@
 import Modeling.Builders.*;
 import Modeling.TimeSpan;
 import QueryEngine.*;
+import Utilities.Utils;
 import org.json.JSONException;
 
 import java.util.List;
@@ -127,10 +128,10 @@ public class Driver {
 
         movies.print();
 
-        Utils.exportToArff(movies, "award_prediction.arff", "awards", "year", "DATE", "runtime",
-            "NUMERIC", "budget", "NUMERIC", "revenue", "NUMERIC", "averagerating", "NUMERIC", "numvotes", "NUMERIC");
+        Dataset training = new Dataset(movies.subList(0, (movies.size() * 3)/4));
+        Dataset classifying = new Dataset(movies.subList((movies.size() * 3)/4, movies.size()));
 
-        modelBuilder.buildModel(movies, null, zeroes);
+        modelBuilder.buildModel(training, classifying, zeroes);
 
     }
 }

@@ -42,7 +42,7 @@ public final class Queries {
                 "  NATURAL JOIN Finances\n" +
                 "  NATURAL JOIN Ratings\n" +
                 "ORDER BY tConst " +
-                "LIMIT 100";
+                "LIMIT 400";
     }
 
     public static String getActorNotDiedBeforeReleaseQuery(int startYear, int endYear) {

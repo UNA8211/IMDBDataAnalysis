@@ -1,3 +1,5 @@
+package Utilities;
+
 import QueryEngine.Dataset;
 import QueryEngine.JSONEngine;
 
@@ -36,7 +38,7 @@ public class Utils {
             fw = new FileWriter("src/main/java/data/" + fileName);
             bw = new BufferedWriter(fw);
 
-            bw.write("@RELATION " + relation + "\n");
+            bw.write("@RELATION " + relation + "\n\n");
             for (int i = 0; i < attrs.length - 1; i+=2) {
                 bw.write("@ATTRIBUTE " + attrs[i] + " " +
                         (attrs[i + 1].equalsIgnoreCase("date") ? "DATE \"yyyy\"" : attrs[i + 1]) + "\n");
