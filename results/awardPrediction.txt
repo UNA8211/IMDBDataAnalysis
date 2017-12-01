@@ -1,31 +1,180 @@
+IB1 instance-based classifier
 using 1 nearest neighbour(s) for classification
 
+Value prediction within range: 1.0
 ------------------------------------------------
-Average accuracy: 0.7342, StdDev: 0.009620810776644565
+Average accuracy: 0.4707246376811594, StdDev: 0.01630418679469593
 
 
 
 IB1 instance-based classifier
 using 3 nearest neighbour(s) for classification
 
+Value prediction within range: 1.0
 ------------------------------------------------
-Average accuracy: 0.7379, StdDev: 0.017328877632437723
+Average accuracy: 0.42144927536231885, StdDev: 0.020006300204912918
 
 
 
 IB1 instance-based classifier
 using 5 nearest neighbour(s) for classification
 
+Value prediction within range: 1.0
 ------------------------------------------------
-Average accuracy: 0.7316999999999999, StdDev: 0.012008746812219842
+Average accuracy: 0.41362318840579715, StdDev: 0.01999999999999999
 
 
 
 IB1 instance-based classifier
 using 7 nearest neighbour(s) for classification
 
+Value prediction within range: 1.0
 ------------------------------------------------
-Average accuracy: 0.7335999999999999, StdDev: 0.010650821564555487
+Average accuracy: 0.4052173913043478, StdDev: 0.016841552517488624
+
+
+
+IB1 instance-based classifier
+using 1 nearest neighbour(s) for classification
+
+Value prediction within range: 2.0
+------------------------------------------------
+Average accuracy: 0.6052173913043479, StdDev: 0.017526048067050416
+
+
+
+IB1 instance-based classifier
+using 3 nearest neighbour(s) for classification
+
+Value prediction within range: 2.0
+------------------------------------------------
+Average accuracy: 0.6130434782608696, StdDev: 0.014449209948538589
+
+
+
+IB1 instance-based classifier
+using 5 nearest neighbour(s) for classification
+
+Value prediction within range: 2.0
+------------------------------------------------
+Average accuracy: 0.6234782608695651, StdDev: 0.017461212152845254
+
+
+
+IB1 instance-based classifier
+using 7 nearest neighbour(s) for classification
+
+Value prediction within range: 2.0
+------------------------------------------------
+Average accuracy: 0.6179710144927537, StdDev: 0.02233201192377764
+
+
+
+IB1 instance-based classifier
+using 1 nearest neighbour(s) for classification
+
+Value prediction within range: 3.0
+------------------------------------------------
+Average accuracy: 0.6994202898550725, StdDev: 0.01341186701595279
+
+
+
+IB1 instance-based classifier
+using 3 nearest neighbour(s) for classification
+
+Value prediction within range: 3.0
+------------------------------------------------
+Average accuracy: 0.7188405797101449, StdDev: 0.024900558370915392
+
+
+
+IB1 instance-based classifier
+using 5 nearest neighbour(s) for classification
+
+Value prediction within range: 3.0
+------------------------------------------------
+Average accuracy: 0.7228985507246375, StdDev: 0.025308846322252825
+
+
+
+IB1 instance-based classifier
+using 7 nearest neighbour(s) for classification
+
+Value prediction within range: 3.0
+------------------------------------------------
+Average accuracy: 0.7382608695652173, StdDev: 0.0196610642111439
+
+
+
+IB1 instance-based classifier
+using 1 nearest neighbour(s) for classification
+
+Value prediction within range: 4.0
+------------------------------------------------
+Average accuracy: 0.776231884057971, StdDev: 0.018953950984662987
+
+
+
+IB1 instance-based classifier
+using 3 nearest neighbour(s) for classification
+
+Value prediction within range: 4.0
+------------------------------------------------
+Average accuracy: 0.7828985507246375, StdDev: 0.01712108918912738
+
+
+
+IB1 instance-based classifier
+using 5 nearest neighbour(s) for classification
+
+Value prediction within range: 4.0
+------------------------------------------------
+Average accuracy: 0.7950724637681159, StdDev: 0.014839334186864022
+
+
+
+IB1 instance-based classifier
+using 7 nearest neighbour(s) for classification
+
+Value prediction within range: 4.0
+------------------------------------------------
+Average accuracy: 0.792463768115942, StdDev: 0.01196508257423206
+
+
+
+IB1 instance-based classifier
+using 1 nearest neighbour(s) for classification
+
+Value prediction within range: 5.0
+------------------------------------------------
+Average accuracy: 0.8127536231884058, StdDev: 0.00688367657219589
+
+
+
+IB1 instance-based classifier
+using 3 nearest neighbour(s) for classification
+
+Value prediction within range: 5.0
+------------------------------------------------
+Average accuracy: 0.82, StdDev: 0.015793777073420598
+
+
+
+IB1 instance-based classifier
+using 5 nearest neighbour(s) for classification
+
+Value prediction within range: 5.0
+------------------------------------------------
+Average accuracy: 0.8342028985507246, StdDev: 0.012884701896169781
+
+
+
+IB1 instance-based classifier
+using 7 nearest neighbour(s) for classification
+
+Value prediction within range: 5.0
+------------------------------------------------
+Average accuracy: 0.8362318840579709, StdDev: 0.01039040482836807
 
 
 

@@ -170,7 +170,8 @@ public class QueryFactory {
                 "FROM Production\n" +
                 "  NATURAL JOIN Finances\n" +
                 "  NATURAL JOIN Ratings\n" +
+                "WHERE runTime > 60\n" +
                 "ORDER BY tConst " +
-                "LIMIT 2000";
+                "LIMIT 1000";
     }
 }

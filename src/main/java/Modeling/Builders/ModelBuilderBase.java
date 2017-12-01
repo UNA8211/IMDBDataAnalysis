@@ -17,6 +17,8 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 public class ModelBuilderBase implements IModelBuilder {
 
+    protected double accuracyRequirement = 2.0;
+
     public ModelBuilderBase() {
 
     }
@@ -57,6 +59,7 @@ public class ModelBuilderBase implements IModelBuilder {
         stdDev = Math.sqrt(stdDev / accuracies.size());
 
         System.out.println(classifier.toString());
+        System.out.println("Value prediction within range: " + this.accuracyRequirement);
         System.out.println("------------------------------------------------");
         System.out.println("Average accuracy: " + avgAccuracy + ", StdDev: " + stdDev);
         System.out.println("\n\n");
@@ -84,7 +87,7 @@ public class ModelBuilderBase implements IModelBuilder {
             int total = 0;
             while ((current = classLoader.getNextInstance(structure2)) != null) {
                 double classValue = classifier.classifyInstance(current);
-                if (Math.abs(classValue - current.classValue()) <= 2.0) {
+                if (Math.abs(classValue - current.classValue()) <= accuracyRequirement) {
                     correct++;
                 }
                 total++;
