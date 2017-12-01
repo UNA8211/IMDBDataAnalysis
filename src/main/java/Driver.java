@@ -25,7 +25,7 @@ public class Driver {
     public static void main(String[] args) {
         QueryEngine queryEngine = new QueryEngine();
         JSONEngine jsonEngine = new JSONEngine();
-        analyzeActorDiedBeforeMovieRelease(queryEngine);
+        //analyzeActorDiedBeforeMovieRelease(queryEngine);
         awardsPrediction(queryEngine, jsonEngine);
         queryEngine.closeConnection();
     }

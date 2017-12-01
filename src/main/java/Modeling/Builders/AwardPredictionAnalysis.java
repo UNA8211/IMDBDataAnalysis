@@ -29,19 +29,40 @@ public class AwardPredictionAnalysis extends ModelBuilderBase {
                 "class", "NUMERIC", "nominations", "NUMERIC");
 
         try {
-            ArffLoader loader = new ArffLoader();
-            loader.setFile(new File("src/main/java/data/award_prediction_train.arff"));
-            Instances structure = loader.getStructure();
-            structure.setClassIndex(structure.numAttributes() - 1);
+            ArffLoader trainingLoader = new ArffLoader();
+            trainingLoader.setFile(new File("src/main/java/data/award_prediction_train.arff"));
+            Instances structure = trainingLoader.getStructure();
+            structure.setClassIndex(structure.numAttributes() - 2);
 
             IBk iBk = new IBk(3);
             iBk.buildClassifier(structure);
             Instance current;
-            while ((current = loader.getNextInstance(structure)) != null) {
+            while ((current = trainingLoader.getNextInstance(structure)) != null) {
                 iBk.updateClassifier(current);
             }
 
             System.out.println(iBk);
+
+            ArffLoader classLoader = new ArffLoader();
+            classLoader.setFile(new File("src/main/java/data/award_prediction_class.arff"));
+            Instances structure2 = classLoader.getStructure();
+            structure2.setClassIndex(structure2.numAttributes() - 2);
+
+            current = null;
+            int correct = 0;
+            int total = 0;
+            while((current = classLoader.getNextInstance(structure2)) != null) {
+                double classValue = iBk.classifyInstance(current);
+                if (Math.abs(classValue - current.classValue()) <= 3.0) {
+                    correct++;
+                }
+                total++;
+            }
+
+            System.out.println("CORRECT CLASSIFICATIONS: " + correct);
+            System.out.println("TOTAL CLASSIFICATIONS:   " + total);
+            System.out.println("CLASSIFICATION ACCURACY: " + (correct / (double) total) * 100 + "%");
+
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
