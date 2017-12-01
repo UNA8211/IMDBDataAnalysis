@@ -6,10 +6,11 @@ import QueryEngine.JSONEngine;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Utils {
 
-    public static final String AWARD_NUM_REGEX = "(\\d+)";
+    public static final Pattern AWARD_NUM_REGEX = Pattern.compile("(\\d+)");
 
     public static List<String> pullAwardData(String awards) {
         awards = awards.substring(!awards.contains("Another") ? 0 : awards.indexOf("Another"));

@@ -26,14 +26,14 @@ public class JSONEngine {
         return null;
     }
 
-    public static List<String> extractFromField(String pattern, String line) {
+    // Todo: Fix cyclic call stack with Utils
+    public static List<String> extractFromField(Pattern pattern, String line) {
         try {
-            Pattern p = Pattern.compile(pattern);
-            Matcher m = p.matcher(line);
+            Matcher matcher = pattern.matcher(line);
             List<String> awardData = new ArrayList<>();
 
-            while (m.find()) {
-                awardData.add(m.group(1));
+            while (matcher.find()) {
+                awardData.add(matcher.group(1));
             }
             return awardData;
         } catch (JSONException e) {

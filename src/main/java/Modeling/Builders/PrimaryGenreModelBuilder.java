@@ -43,6 +43,7 @@ public class PrimaryGenreModelBuilder extends ModelBuilderBase {
                 || actor.getPrimaryPercentage() < minPercentage
                 || actor.getPrimaryPercentage() > maxPercentage);
 
+        // Todo: Push stats magic to base class
         // Compute means
         double avgPrimaryRating = 0.0;
         double avgOtherRating = 0.0;
