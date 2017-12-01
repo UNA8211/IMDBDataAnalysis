@@ -9,6 +9,7 @@ public class ActorDeathAnalysis extends ModelBuilderBase {
 
     @Override
     public void buildModel(Dataset died, Dataset living, TimeSpan timeSpan) {
+        System.out.println("Begin Analysis");
         // Get average rating of each dataset
         double avgDiedRating = 0.f;
         double avgLivingRating = 0.f;

@@ -152,8 +152,9 @@ public class QueryFactory {
                 "        AND Ratings.averageRating IS NOT NULL)\n" +
                 "  JOIN Production\n" +
                 "    ON (Acts_In.tConst = Production.tConst\n" +
-                "        AND Production.adult = 0\n" +
-                "        AND Production.startYear > " + startYear + "\n" +
-                "        AND Production.startYear < " + endYear + ")";
+                "        AND adult = 0\n" +
+                "        AND titleType = 'movie'\n" +
+                "        AND Production.startYear > 1980)\n" +
+                "LIMIT 1000000";
     }
 }

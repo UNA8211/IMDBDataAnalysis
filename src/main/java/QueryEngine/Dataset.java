@@ -20,11 +20,11 @@ public class Dataset extends ArrayList<List<String>> {
         }
     }
 
-    Dataset(Dataset dataset) {
+    public Dataset(Dataset dataset) {
         super(dataset);
     }
 
-    Dataset(ResultSet resultSet) {
+    public Dataset(ResultSet resultSet) {
         try {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();

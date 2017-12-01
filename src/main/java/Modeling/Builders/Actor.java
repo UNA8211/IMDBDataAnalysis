@@ -31,14 +31,29 @@ public class Actor {
         this.otherGenreRating = getNonPrimaryGenreRating();
     }
 
+    public double getPrimaryPercentage() {
+        int totalCount = 0;
+        int primaryCount = 0;
+        List<Genre> examples = new ArrayList<>(this.genres.values());
+        for (Genre genre : examples) {
+            if (Objects.equals(genre.name, this.primaryGenre)) {
+                primaryCount += genre.count;
+                totalCount += genre.count;
+            } else {
+                totalCount += genre.count;
+            }
+        }
+
+        return primaryCount / (double) totalCount;
+    }
+
     public double getPrimaryGenreRating() {
         return this.primaryGenreRating;
-    }
+}
 
     public double getOtherGenresRating() {
         return this.otherGenreRating;
     }
-
 
     private double getNonPrimaryGenreRating() {
         if (primaryGenre == null) {
@@ -81,6 +96,7 @@ public class Actor {
             }
         }
         this.primaryGenre = primaryGenre;
+        this.primaryGenreRating = this.genres.get(primaryGenre).rating;
     }
 
     private class Genre {

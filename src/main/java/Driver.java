@@ -27,6 +27,7 @@ public class Driver {
         JSONEngine jsonEngine = new JSONEngine();
         //analyzeActorDiedBeforeMovieRelease(queryEngine);
         awardsPrediction(queryEngine, jsonEngine);
+        analysisActorPerformanceForPrimaryGenre(queryEngine);
         queryEngine.closeConnection();
     }
 
@@ -109,8 +110,8 @@ public class Driver {
     }
 
     private static void analysisActorPerformanceForPrimaryGenre(QueryEngine engine) {
-        IModelBuilder modelBuilder = new PrimaryGenreAnalysis();
-        Dataset genres = engine.executeQuery(QueryFactory.buildQuery(PrimaryGenre, zeroes));
+        IModelBuilder modelBuilder = new PrimaryGenreAnalysis(0.5, 0.7);
+        Dataset genres = DatasetBuilder.buildDataset("datasets/primaryGenre.tsv");//engine.executeQuery(QueryFactory.buildQuery(PrimaryGenre, zeroes));
         modelBuilder.buildModel(genres, null, zeroes);
     }
 
