@@ -6,11 +6,11 @@ import QueryEngine.Dataset;
 
 import java.util.*;
 
-public class ActorPairAnalysis extends ModelBuilderBase {
+public class ActorPairModelBuilder extends ModelBuilderBase {
 
     private int minFrequency;
 
-    public ActorPairAnalysis(int minFrequency) {
+    public ActorPairModelBuilder(int minFrequency) {
         this.minFrequency = minFrequency;
     }
 

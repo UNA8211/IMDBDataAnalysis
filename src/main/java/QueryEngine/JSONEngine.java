@@ -7,8 +7,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
@@ -16,13 +15,9 @@ import java.util.regex.Pattern;
 
 public class JSONEngine {
 
-    private final String url = "http://www.omdbapi.com/?apikey=9ac195bd&i=";
+    private static final String url = "http://www.omdbapi.com/?apikey=9ac195bd&i=";
 
-    public JSONEngine() {
-
-    }
-
-    public JSONObject readJsonFromUrl(String tConst) {
+    public static JSONObject readJsonFromUrl(String tConst) {
         try {
             return new JSONObject(IOUtils.toString(new URL(url + tConst), Charset.forName("UTF-8")));
         } catch (Exception e) {
@@ -46,11 +41,11 @@ public class JSONEngine {
         }
     }
 
-    public static void fetchData(JSONEngine jsonEngine, Dataset movies, String attribute) {
+    public static void fetchData(Dataset movies, String attribute) {
         try {
             CompletableFuture.allOf(movies.parallelStream()
                     .map(movie -> CompletableFuture.supplyAsync(() ->
-                            movie.addAll(Utils.pullAwardData(jsonEngine.readJsonFromUrl(movie.get(0)).getString(attribute)))))
+                            movie.addAll(Utils.pullAwardData(Objects.requireNonNull(readJsonFromUrl(movie.get(0))).getString(attribute)))))
                     .toArray(CompletableFuture[]::new))
                     .get();
         } catch (InterruptedException | ExecutionException e) {

@@ -1,4 +1,4 @@
-package Modeling.Builders;
+package Modeling;
 
 import java.util.*;
 

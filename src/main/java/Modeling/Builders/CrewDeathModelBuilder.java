@@ -5,7 +5,7 @@ import QueryEngine.Dataset;
 
 import java.util.List;
 
-public class ActorDeathAnalysis extends ModelBuilderBase {
+public class CrewDeathModelBuilder extends ModelBuilderBase {
 
     @Override
     public void buildModel(Dataset died, Dataset living, TimeSpan timeSpan) {

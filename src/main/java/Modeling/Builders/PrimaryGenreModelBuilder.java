@@ -1,16 +1,17 @@
 package Modeling.Builders;
 
+import Modeling.Actor;
 import Modeling.TimeSpan;
 import QueryEngine.Dataset;
 
 import java.util.*;
 
-public class PrimaryGenreAnalysis extends ModelBuilderBase {
+public class PrimaryGenreModelBuilder extends ModelBuilderBase {
 
     private double minPercentage;
     private double maxPercentage;
 
-    public PrimaryGenreAnalysis(double minPercentage, double maxPercentage) {
+    public PrimaryGenreModelBuilder(double minPercentage, double maxPercentage) {
         this.minPercentage = minPercentage;
         this.maxPercentage = maxPercentage;
     }

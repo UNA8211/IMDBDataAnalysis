@@ -15,7 +15,7 @@ public class QueryFactory {
             case ActorIndividual:
                 return getActorAverageRatingQuery(timeSpan.startYear, timeSpan.endYear);
             case Awards:
-                return getAwardDataQuery();
+                return getAwardDataQuery(timeSpan.startYear, timeSpan.endYear);
             case Sequels:
                 return getSequelsQuery();
             case PrimaryGenre:
@@ -158,7 +158,7 @@ public class QueryFactory {
                 "LIMIT 1000000";
     }
 
-    private static String getAwardDataQuery() {
+    private static String getAwardDataQuery(int startYear, int endYear) {
         return "SELECT \n" +
                 "  tConst,\n" +
                 "  startYear,\n" +
@@ -171,6 +171,8 @@ public class QueryFactory {
                 "  NATURAL JOIN Finances\n" +
                 "  NATURAL JOIN Ratings\n" +
                 "WHERE runTime > 60\n" +
+                "  AND startYear > " + startYear + "\n" +
+                "  AND startYear < " + endYear + "\n" +
                 "ORDER BY tConst " +
                 "LIMIT 1000";
     }
