@@ -1,6 +1,8 @@
 import Modeling.Builders.*;
 import Modeling.TimeSpan;
 import QueryEngine.*;
+import Utilities.Utils;
+import org.json.JSONException;
 
 import java.util.List;
 
@@ -22,7 +24,9 @@ public class Driver {
 
     public static void main(String[] args) {
         QueryEngine queryEngine = new QueryEngine();
-        analyzeActorDiedBeforeMovieRelease(queryEngine);
+        JSONEngine jsonEngine = new JSONEngine();
+        //analyzeActorDiedBeforeMovieRelease(queryEngine);
+        awardsPrediction(queryEngine, jsonEngine);
         queryEngine.closeConnection();
     }
 
@@ -114,9 +118,16 @@ public class Driver {
         IModelBuilder modelBuilder = new AwardPredictionAnalysis();
         Dataset movies = queryEngine.executeQuery(Queries.getAwardDataQuery());
         for (List<String> movie : movies) {
-            movie.addAll(Utils.pullAwardData(jsonEngine.readJsonFromUrl(movie.get(0)).getString("Awards")));
+            try {
+                movie.addAll(Utils.pullAwardData(jsonEngine.readJsonFromUrl(movie.get(0)).getString("Awards")));
+            } catch (JSONException e) {
+                movie.addAll(Utils.noAwards());
+            }
         }
 
-        modelBuilder.buildModel(movies, null, zeroes);
+        Dataset training = new Dataset(movies.subList(0, (movies.size() * 3)/4));
+        Dataset classifying = new Dataset(movies.subList((movies.size() * 3)/4, movies.size()));
+
+        modelBuilder.buildModel(training, classifying, zeroes);
     }
 }

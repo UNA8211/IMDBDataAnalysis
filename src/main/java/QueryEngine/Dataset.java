@@ -6,8 +6,18 @@ import java.util.List;
 
 public class Dataset extends ArrayList<List<String>> {
 
-    Dataset() {
+    public Dataset() {
 
+    }
+
+    public Dataset(List<List<String>> data) {
+        for(List<String> line : data) {
+            List<String> adding = new ArrayList();
+            for (String s : line) {
+                adding.add(new String(s));
+            }
+            this.add(adding);
+        }
     }
 
     Dataset(Dataset dataset) {

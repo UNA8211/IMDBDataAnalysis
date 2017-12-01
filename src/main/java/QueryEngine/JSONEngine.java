@@ -1,5 +1,6 @@
 package QueryEngine;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.apache.commons.io.IOUtils;
@@ -29,14 +30,19 @@ public class JSONEngine {
     }
 
     public static List<String> extractFromField(String pattern, String line) {
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(line);
-        List<String> awardData = new ArrayList();
+        try {
+            Pattern p = Pattern.compile(pattern);
+            Matcher m = p.matcher(line);
+            List<String> awardData = new ArrayList();
 
-        while (m.find()) {
-            awardData.add(m.group(1));
+            while (m.find()) {
+                awardData.add(m.group(1));
+            }
+
+
+            return awardData;
+        } catch (JSONException e) {
+            return new ArrayList<String>();
         }
-
-        return awardData;
     }
 }
