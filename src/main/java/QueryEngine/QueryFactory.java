@@ -34,45 +34,61 @@ public class QueryFactory {
 
     private static String getActorDiedBeforeReleaseQuery(int startYear, int endYear) {
         return "SELECT\n" +
-                "  primaryName,\n" +
-                "  deathYear,\n" +
                 "  primaryTitle,\n" +
                 "  startYear,\n" +
+                "  deathYear,\n" +
                 "  averageRating\n" +
-                "FROM Person\n" +
-                "  NATURAL JOIN Acts_In\n" +
-                "  NATURAL JOIN Production\n" +
-                "  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst\n" +
+                "FROM\n" +
+                "  (SELECT DISTINCT\n" +
+                "     nConst,\n" +
+                "     deathYear,\n" +
+                "     tConst,\n" +
+                "     averageRating\n" +
+                "   FROM\n" +
+                "     Person\n" +
+                "     NATURAL JOIN Acts_In\n" +
+                "     NATURAL JOIN Directs\n" +
+                "     NATURAL JOIN Writes\n" +
+                "     NATURAL JOIN Ratings\n" +
+                "   WHERE averageRating IS NOT NULL\n" +
+                "         AND averageRating != 0\n" +
+                "         AND deathYear IS NOT NULL\n" +
+                "         AND deathYear > 1900\n" +
+                "  ) AS Part\n" +
+                "  JOIN Production ON Part.tConst = Production.tConst\n" +
                 "WHERE\n" +
-                "  deathYear IS NOT NULL\n" +
-                "  AND averageRating IS NOT NULL\n" +
-                "  AND startYear > deathYear\n" +
+                "  adult = 0\n" +
                 "  AND startYear > " + startYear + "\n" +
                 "  AND startYear < " + endYear + "\n" +
-                "  AND titleType = 'movie'\n" +
-                "  AND adult = 0\n" +
-                "ORDER BY primaryName ASC";
+                "  AND startYear > deathYear;";
     }
 
     private static String getActorNotDiedBeforeReleaseQuery(int startYear, int endYear) {
         return "SELECT\n" +
-                "  primaryName,\n" +
-                "  deathYear,\n" +
                 "  primaryTitle,\n" +
-                "  startYear,\n" +
                 "  averageRating\n" +
-                "FROM Person\n" +
-                "  NATURAL JOIN Acts_In\n" +
-                "  NATURAL JOIN Production\n" +
-                "  LEFT JOIN Ratings ON Ratings.tConst = Production.tConst\n" +
+                "FROM (\n" +
+                "       SELECT DISTINCT\n" +
+                "         nConst,\n" +
+                "         deathYear,\n" +
+                "         tConst,\n" +
+                "         averageRating\n" +
+                "       FROM\n" +
+                "         Person\n" +
+                "         NATURAL JOIN Acts_In\n" +
+                "         NATURAL JOIN Directs\n" +
+                "         NATURAL JOIN Writes\n" +
+                "         NATURAL JOIN Ratings\n" +
+                "       WHERE averageRating IS NOT NULL\n" +
+                "             AND averageRating != 0\n" +
+                "             AND deathYear IS NOT NULL\n" +
+                "     ) AS Part\n" +
+                "  JOIN Production ON Part.tConst = Production.tConst\n" +
                 "WHERE\n" +
-                "  averageRating IS NOT NULL\n" +
-                "  AND (deathYear IS NULL OR startYear < deathYear)\n" +
+                "  adult = 0\n" +
                 "  AND startYear > " + startYear + "\n" +
                 "  AND startYear < " + endYear + "\n" +
-                "  AND titleType = 'movie'\n" +
-                "  AND adult = 0\n" +
-                "ORDER BY primaryName ASC";
+                "  AND startYear < deathYear;";
     }
 
     private static String getActorPairsQuery(int startYear, int endYear) {
@@ -118,7 +134,7 @@ public class QueryFactory {
                 "      WHERE adult = 0\n" +
                 "            AND startYear > " + startYear + "\n" +
                 "            AND startYear < " + endYear + "\n" +
-                "            AND titleType = 'movie'\n" +
+                //        "            AND titleType = 'movie'\n" +
                 "     ) AS ratings\n" +
                 "GROUP BY nConst\n";
     }
