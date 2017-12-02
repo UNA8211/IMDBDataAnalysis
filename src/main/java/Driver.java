@@ -26,8 +26,8 @@ public class Driver {
         QueryEngine queryEngine = new QueryEngine();
 
         analyzeEffectOfCrewDeath(queryEngine);
-        analyzePredictabilityOfAwards(queryEngine);
-        analyzePerformanceOfPrimaryGenre(queryEngine, true);
+//        analyzePredictabilityOfAwards(queryEngine);
+//        analyzePerformanceOfPrimaryGenre(queryEngine, true);
 
         queryEngine.closeConnection();
     }

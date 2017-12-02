@@ -96,7 +96,7 @@ public class ModelBuilderBase implements IModelBuilder {
     private double computeFold(Classifier classifier) {
         try {
             ArffLoader trainingLoader = new ArffLoader();
-            trainingLoader.setFile(new File("src/main/java/data/training.arff"));
+            trainingLoader.setFile(new File("src/main/java/Data/training.arff"));
             Instances structure = trainingLoader.getStructure();
             structure.setClassIndex(structure.numAttributes() - 2);
             classifier.buildClassifier(structure);
@@ -107,7 +107,7 @@ public class ModelBuilderBase implements IModelBuilder {
             }
 
             ArffLoader classLoader = new ArffLoader();
-            classLoader.setFile(new File("src/main/java/data/testing.arff"));
+            classLoader.setFile(new File("src/main/java/Data/testing.arff"));
             Instances structure2 = classLoader.getStructure();
             structure2.setClassIndex(structure2.numAttributes() - 2);
 

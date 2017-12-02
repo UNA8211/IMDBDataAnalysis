@@ -37,7 +37,7 @@ public class Utils {
         FileWriter fw = null;
 
         try {
-            fw = new FileWriter("src/main/java/data/" + fileName);
+            fw = new FileWriter("src/main/java/Data/" + fileName);
             bw = new BufferedWriter(fw);
 
             bw.write("@RELATION " + relation + "\n\n");

@@ -19,12 +19,15 @@ public class QueryEngine {
     }
 
     public Dataset executeQuery(String query) {
+        System.out.println("Begin Query Execution");
+        long startTime = System.currentTimeMillis();
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs;
 
             rs = stmt.executeQuery(query);
 
+            System.out.println("Query Complete, Runtime: " + (System.currentTimeMillis() - startTime) / 1000 + "s");
             return new Dataset(rs);
         } catch (SQLException e) {
             System.err.print(e.getMessage());

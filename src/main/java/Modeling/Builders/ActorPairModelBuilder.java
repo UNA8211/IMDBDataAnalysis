@@ -51,7 +51,7 @@ public class ActorPairModelBuilder extends ModelBuilderBase {
             }
         });
 
-        // Remove elements without individual data, use one because ya know.. 0.0 doesn't equal 0
+        // Remove elements without individual Data, use one because ya know.. 0.0 doesn't equal 0
         frequentPairs.removeIf(actorPair -> actorPair.getAvgIndividualActorQuality() < 1);
 
         System.out.println(timeSpan.startYear != 0 ? "TimeSpan: " + timeSpan.startYear + "s" : "All time");

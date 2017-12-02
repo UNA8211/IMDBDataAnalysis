@@ -17,13 +17,16 @@ public class JSONEngine {
 
     private static final String url = "http://www.omdbapi.com/?apikey=9ac195bd&i=";
 
-    public static JSONObject readJsonFromUrl(String tConst) {
+    public static void fetchData(Dataset movies, String attribute) {
         try {
-            return new JSONObject(IOUtils.toString(new URL(url + tConst), Charset.forName("UTF-8")));
-        } catch (Exception e) {
+            CompletableFuture.allOf(movies.parallelStream()
+                    .map(movie -> CompletableFuture.supplyAsync(() ->
+                            movie.addAll(Utils.pullAwardData(Objects.requireNonNull(readJsonFromUrl(movie.get(0))).getString(attribute)))))
+                    .toArray(CompletableFuture[]::new))
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     // Todo: Fix cyclic call stack with Utils
@@ -41,15 +44,12 @@ public class JSONEngine {
         }
     }
 
-    public static void fetchData(Dataset movies, String attribute) {
+    private static JSONObject readJsonFromUrl(String tConst) {
         try {
-            CompletableFuture.allOf(movies.parallelStream()
-                    .map(movie -> CompletableFuture.supplyAsync(() ->
-                            movie.addAll(Utils.pullAwardData(Objects.requireNonNull(readJsonFromUrl(movie.get(0))).getString(attribute)))))
-                    .toArray(CompletableFuture[]::new))
-                    .get();
-        } catch (InterruptedException | ExecutionException e) {
+            return new JSONObject(IOUtils.toString(new URL(url + tConst), Charset.forName("UTF-8")));
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
