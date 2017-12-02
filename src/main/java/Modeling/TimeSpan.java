@@ -1,5 +1,9 @@
 package Modeling;
 
+/**
+ * A container object for a time window during which a query is valid,
+ * typically used to represent a particular decade
+ */
 public class TimeSpan {
 
     public final int startYear;

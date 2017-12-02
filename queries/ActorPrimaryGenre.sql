@@ -1,7 +1,9 @@
 SELECT
   primaryName,
+  Production.tConst,
   genre,
-  averageRating
+  averageRating,
+  startYear
 FROM Person
   NATURAL JOIN Acts_In
   NATURAL JOIN Genre
@@ -11,4 +13,4 @@ FROM Person
   JOIN Production
     ON (Acts_In.tConst = Production.tConst
         AND Production.adult = 0
-        AND Production.startYear > 1980)
+        AND Production.startYear > 1900)

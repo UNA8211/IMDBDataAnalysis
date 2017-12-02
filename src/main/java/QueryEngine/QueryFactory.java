@@ -2,6 +2,10 @@ package QueryEngine;
 
 import Modeling.TimeSpan;
 
+/**
+ * QueryFactory maintains each of the MySQL scripts used in this project and provides a means of accessing time period
+ * specific version of each by a strongly typed QueryType enum
+ */
 public class QueryFactory {
 
     public static String buildQuery(QueryType type, TimeSpan timeSpan) {

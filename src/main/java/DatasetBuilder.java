@@ -8,11 +8,16 @@ import java.util.stream.Stream;
 public class DatasetBuilder {
 
     public static Dataset buildDataset(String fileName) {
+        Long startTime = System.currentTimeMillis();
+        System.out.print("Begin file read... ");
         List<String> dataLines = Objects.requireNonNull(getFileStream(new File(fileName))).collect(Collectors.toList());
 
-        return dataLines.parallelStream()
+        Dataset dataset = dataLines.parallelStream()
                 .map(line -> Arrays.asList(line.split("\t")))
                 .collect(Collectors.toCollection(Dataset::new));
+
+        System.out.println("complete, runtime: " + (System.currentTimeMillis() - startTime) / 1000.0 + "s");
+        return dataset;
     }
 
     private static Stream<String> getFileStream(File file) {

@@ -13,11 +13,18 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * JSONEngine provides an means of communicating with the OMDBAPI to fetch specific movie data. Data fetching is handled
+ * asynchronously and returns after all api requests have been satisfied or responded in error. The requested data attributes
+ * are then stripped from the returned JSON objects and appended to the provided dataset
+ */
 public class JSONEngine {
 
     private static final String url = "http://www.omdbapi.com/?apikey=9ac195bd&i=";
 
     public static void fetchData(Dataset movies, String attribute) {
+        Long startTime = System.currentTimeMillis();
+        System.out.print("Begin omdbapi data fetch... ");
         try {
             CompletableFuture.allOf(movies.parallelStream()
                     .map(movie -> CompletableFuture.supplyAsync(() ->
@@ -27,6 +34,7 @@ public class JSONEngine {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+        System.out.println("complete, runtime: " + (System.currentTimeMillis() - startTime) / 1000.0 + "s");
     }
 
     // Todo: Fix cyclic call stack with Utils

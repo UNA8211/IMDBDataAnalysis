@@ -14,6 +14,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Base class contains functionality common to multiple model builders such as cross validation for classifiers
+ * and statistical data computation.
+ */
 public class ModelBuilderBase implements IModelBuilder {
 
     protected double accuracyRequirement = 2.0;

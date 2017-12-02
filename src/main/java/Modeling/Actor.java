@@ -2,17 +2,19 @@ package Modeling;
 
 import java.util.*;
 
+/**
+ * The Actor class represents a single instance of an actor, A HashMap of Actors is used to collect genre and performance
+ * data for each actor over the entire dataset, allowing for isolated analysis of individual actors as well as collective
+ * data on the set as a whole.
+ */
 public class Actor {
 
-    private String nConst;
     private HashMap<String, Genre> genres;
-
     private String primaryGenre;
     private double primaryGenreRating;
     private double otherGenreRating;
 
-    public Actor(String nConst, String genre, double rating) {
-        this.nConst = nConst;
+    public Actor(String genre, double rating) {
         this.genres = new HashMap<>();
         this.addExample(genre, rating);
     }
@@ -49,7 +51,7 @@ public class Actor {
 
     public double getPrimaryGenreRating() {
         return this.primaryGenreRating;
-}
+    }
 
     public double getOtherGenresRating() {
         return this.otherGenreRating;

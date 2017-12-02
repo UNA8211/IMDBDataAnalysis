@@ -7,6 +7,11 @@ import java.util.List;
 
 import static QueryEngine.QueryType.*;
 
+/**
+ * Driver serves and program entry point and allows for selection of which types of queries and analysis
+ * should be preformed. Datasets for modeling and analysis may be retried from an SQL database using the QueryEngine
+ * or from local .tsv files using the DatasetBuilder class.
+ */
 public class Driver {
 
     private static List<TimeSpan> decades;
@@ -26,9 +31,9 @@ public class Driver {
         QueryEngine queryEngine = new QueryEngine();
 
         // analyzeEffectOfCrewDeath(queryEngine);
-        analyzePredictabilityOfSequels(queryEngine, false);
-//        analyzePredictabilityOfAwards(queryEngine);
-//        analyzePerformanceOfPrimaryGenre(queryEngine, true);
+        //analyzePredictabilityOfSequels(queryEngine, false);
+        analyzePredictabilityOfAwards(queryEngine);
+       // analyzePerformanceOfPrimaryGenre(queryEngine, true);
 
         queryEngine.closeConnection();
     }
@@ -54,13 +59,13 @@ public class Driver {
     }
 
     private static void analyzePerformanceOfPrimaryGenre(QueryEngine engine, boolean useLocalDataset) {
-        IModelBuilder modelBuilder = new PrimaryGenreModelBuilder(0.5, 0.7);
+        IModelBuilder modelBuilder = new PrimaryGenreModelBuilder(0.8, 0.99);
         if (useLocalDataset) {
             Dataset genres = DatasetBuilder.buildDataset("datasets/primaryGenre.tsv");
-            modelBuilder.buildModel(genres, null, new TimeSpan(2000, 2010));
+            decades.forEach(decade -> modelBuilder.buildModel(genres, null, decade));
         } else {
             decades.forEach(decade -> {
-                Dataset genres = engine.executeQuery(QueryFactory.buildQuery(PrimaryGenre, decades.get(4)));
+                Dataset genres = engine.executeQuery(QueryFactory.buildQuery(PrimaryGenre, decade));
                 modelBuilder.buildModel(genres, null, decade);
             });
         }
@@ -71,9 +76,7 @@ public class Driver {
         TimeSpan timeSpan = new TimeSpan(1980, 2010);
         Dataset movies = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.Awards, timeSpan));
 
-        System.out.println("Begin fetch");
         JSONEngine.fetchData(movies, "Awards");
-        System.out.println("Fetch complete");
 
         modelBuilder.buildModel(movies, null, timeSpan);
     }
@@ -89,9 +92,7 @@ public class Driver {
             movies = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.Sequels, timeSpan));
         }
 
-        System.out.println("Begin fetch");
         JSONEngine.fetchData(movies, "Awards");
-        System.out.println("Fetch complete");
 
         modelBuilder.buildModel(movies, null, timeSpan);
     }

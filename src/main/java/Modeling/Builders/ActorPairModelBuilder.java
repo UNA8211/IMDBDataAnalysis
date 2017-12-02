@@ -6,6 +6,10 @@ import QueryEngine.Dataset;
 
 import java.util.*;
 
+/**
+ * Attempts to compute data useful for answering the question:
+ * Does a group of actors who often work together perform better on average than do the individuals of that group?
+ */
 public class ActorPairModelBuilder extends ModelBuilderBase {
 
     private int minFrequency;

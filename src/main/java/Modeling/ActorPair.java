@@ -1,5 +1,9 @@
 package Modeling;
 
+/**
+ * ActorPair provides functionality for storing a pair of actors and their respective ratings,
+ * used to collect and supply data with respect to the quality of the individuals and the pair as a whole.
+ */
 public class ActorPair implements Comparable<ActorPair> {
 
     public final String actor1;

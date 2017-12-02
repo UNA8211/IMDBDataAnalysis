@@ -2,6 +2,10 @@ package QueryEngine;
 
 import java.sql.*;
 
+/**
+ * MySQL database query engine provides an API for executing SQL queries against a remote database.
+ * Results are converted to Dataset format and returned upon query completion
+ */
 public class QueryEngine {
 
     private Connection connection;
@@ -19,19 +23,19 @@ public class QueryEngine {
     }
 
     public Dataset executeQuery(String query) {
-        System.out.println("Begin Query Execution");
+        System.out.print("\nBegin SQL query execution... ");
         long startTime = System.currentTimeMillis();
+
         try {
             Statement stmt = connection.createStatement();
-            ResultSet rs;
+            ResultSet rs = stmt.executeQuery(query);
 
-            rs = stmt.executeQuery(query);
-
-            System.out.println("Query Complete, Runtime: " + (System.currentTimeMillis() - startTime) / 1000 + "s");
+            System.out.println("complete, runtime: " + (System.currentTimeMillis() - startTime) / 1000.0 + "s");
             return new Dataset(rs);
         } catch (SQLException e) {
             System.err.print(e.getMessage());
         }
+
         return null;
     }
 
@@ -42,26 +46,6 @@ public class QueryEngine {
             }
         } catch (SQLException e) {
             System.err.print(e.getMessage());
-        }
-    }
-
-    public void printData(ResultSet r) {
-        try {
-            ResultSetMetaData metaData = r.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(metaData.getColumnName(i) + "   ");
-            }
-            System.out.println();
-
-            while (r.next()) {
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(r.getString(i) + " ");
-                }
-                System.out.println();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }

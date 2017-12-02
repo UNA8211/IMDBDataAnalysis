@@ -1,5 +1,9 @@
 package QueryEngine;
 
+/**
+ * An enum typing for each of the queries used in this project, allows simplified communication between Driver and
+ * the SQL QueryFactory
+ */
 public enum QueryType {
     ActorDeath("Effect of an actors death prior to film release"),
     ActorNotDeath("Not"),

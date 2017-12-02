@@ -17,18 +17,25 @@ public class PrimaryGenreModelBuilder extends ModelBuilderBase {
     }
 
     @Override
-    public void buildModel(Dataset actorGenres, Dataset ignored, TimeSpan timeSpan) {
+    public void buildModel(Dataset dataset, Dataset ignored, TimeSpan timeSpan) {
+        // Filter values outside of time span
+        Dataset actorGenres = new Dataset(dataset);
+        int yearIndex = actorGenres.get(0).size() - 1;
+        actorGenres.removeIf(genre -> {
+            Integer year = Integer.parseInt(genre.get(yearIndex));
+            return year < timeSpan.startYear || year > timeSpan.endYear;
+        });
         // Parse dataset and collect actor entities as a HashMap
         HashMap<String, Actor> actors = new HashMap<>();
         actorGenres.parallelStream().forEachOrdered(example -> {
-            String nConst = example.get(0);
+            String name = example.get(0);
             String genre = example.get(1);
-            double rating = Double.parseDouble(example.get(2));
+            double rating = Double.parseDouble(example.get(3));
 
             // If the actor already exists update, otherwise create new
-            Actor existing = actors.get(nConst);
+            Actor existing = actors.get(name);
             if (existing == null) {
-                actors.put(nConst, new Actor(nConst, genre, rating));
+                actors.put(name, new Actor(genre, rating));
             } else {
                 existing.addExample(genre, rating);
             }
