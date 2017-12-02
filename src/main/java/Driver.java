@@ -25,7 +25,8 @@ public class Driver {
     public static void main(String[] args) {
         QueryEngine queryEngine = new QueryEngine();
 
-        analyzeEffectOfCrewDeath(queryEngine);
+        // analyzeEffectOfCrewDeath(queryEngine);
+        analyzePredictabilityOfSequels(queryEngine, false);
 //        analyzePredictabilityOfAwards(queryEngine);
 //        analyzePerformanceOfPrimaryGenre(queryEngine, true);
 
@@ -69,6 +70,24 @@ public class Driver {
         IModelBuilder modelBuilder = new AwardPredictionModelBuilder();
         TimeSpan timeSpan = new TimeSpan(1980, 2010);
         Dataset movies = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.Awards, timeSpan));
+
+        System.out.println("Begin fetch");
+        JSONEngine.fetchData(movies, "Awards");
+        System.out.println("Fetch complete");
+
+        modelBuilder.buildModel(movies, null, timeSpan);
+    }
+
+    private static void analyzePredictabilityOfSequels(QueryEngine queryEngine, boolean useLocalDataset) {
+        IModelBuilder modelBuilder = new SequelPredictionModelBuilder();
+        TimeSpan timeSpan = new TimeSpan(1980, 2010);
+
+        Dataset movies;
+        if (useLocalDataset) {
+            movies = DatasetBuilder.buildDataset("datasets/sequels.tsv");
+        } else {
+            movies = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.Sequels, timeSpan));
+        }
 
         System.out.println("Begin fetch");
         JSONEngine.fetchData(movies, "Awards");

@@ -17,7 +17,7 @@ public class QueryFactory {
             case Awards:
                 return getAwardDataQuery(timeSpan.startYear, timeSpan.endYear);
             case Sequels:
-                return getSequelsQuery();
+                return getSequelsQuery(timeSpan.startYear, timeSpan.endYear);
             case PrimaryGenre:
                 return getActorsGenres(timeSpan.startYear, timeSpan.endYear);
             default:
@@ -25,7 +25,7 @@ public class QueryFactory {
         }
     }
 
-    private static String getSequelsQuery() {
+    private static String getSequelsQuery(int startYear, int endYear) {
         return "SELECT p1.primaryTitle, p2.primaryTitle " +
                 "FROM Production P1, Production P2 " +
                 "WHERE p2.primaryTitle LIKE p1.primaryTitle + '%' " +
