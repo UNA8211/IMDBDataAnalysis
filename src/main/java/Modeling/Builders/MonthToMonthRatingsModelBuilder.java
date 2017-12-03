@@ -27,6 +27,8 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
         HashMap<Integer, Dataset> year = splitOnYear(movies);
         System.out.println("NEW DATASET");
 
+        //todo: Run set on dataset
+        //todo: Logging and output
         Iterator it = year.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
