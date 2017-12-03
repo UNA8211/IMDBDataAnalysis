@@ -32,8 +32,9 @@ public class Driver {
 
         // analyzeEffectOfCrewDeath(queryEngine);
         //analyzePredictabilityOfSequels(queryEngine, false);
-        analyzePredictabilityOfAwards(queryEngine);
-       // analyzePerformanceOfPrimaryGenre(queryEngine, true);
+        //analyzePredictabilityOfAwards(queryEngine);
+        // analyzePerformanceOfPrimaryGenre(queryEngine, true);
+        analyzePerformanceOfGenre(queryEngine);
 
         queryEngine.closeConnection();
     }
@@ -69,6 +70,19 @@ public class Driver {
                 modelBuilder.buildModel(genres, null, decade);
             });
         }
+    }
+
+    private static void analyzePerformanceOfGenre(QueryEngine engine) {
+        IModelBuilder modelBuilder = new GenreYearPerformanceBuilder();
+        TimeSpan timeSpan = new TimeSpan(2000, 2000);
+
+        Dataset movies = engine.executeQuery(QueryFactory.buildQuery(QueryType.GenreYear, timeSpan));
+
+        JSONEngine.fetchData(movies, "Released", "Runtime");
+
+        modelBuilder.buildModel(movies, null, timeSpan);
+
+        movies.print();
     }
 
     private static void analyzePredictabilityOfAwards(QueryEngine queryEngine) {
