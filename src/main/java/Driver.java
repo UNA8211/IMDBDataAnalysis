@@ -112,9 +112,10 @@ public class Driver {
                 movies.addAll(year.subList(0, 100));
             }
 
-            JSONEngine.fetchData(movies, "Ratings", "BoxOffice", "Released");
+            JSONEngine.fetchData(movies, "BoxOffice", "Released");
         }
 
+        // Prune out movies without box office
         Utils.pruneAttribute(movies, 3);
 
         Utils.setFileOut("src/main/java/Data/bestMonths2");
