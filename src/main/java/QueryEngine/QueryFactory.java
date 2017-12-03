@@ -20,8 +20,8 @@ public class QueryFactory {
                 return getActorAverageRatingQuery(timeSpan.startYear, timeSpan.endYear);
             case Awards:
                 return getAwardDataQuery(timeSpan.startYear, timeSpan.endYear);
-            case Sequels:
-                return getSequelsQuery(timeSpan.startYear, timeSpan.endYear);
+            case MovieMonths:
+                return getMovieMonthsQuery(timeSpan.startYear);
             case PrimaryGenre:
                 return getActorsGenres(timeSpan.startYear, timeSpan.endYear);
             default:
@@ -29,11 +29,18 @@ public class QueryFactory {
         }
     }
 
-    private static String getSequelsQuery(int startYear, int endYear) {
-        return "SELECT p1.primaryTitle, p2.primaryTitle " +
-                "FROM Production P1, Production P2 " +
-                "WHERE p2.primaryTitle LIKE p1.primaryTitle + '%' " +
-                "LIMIT 1000";
+    private static String getMovieMonthsQuery(int year) {
+        return "SELECT\n" +
+                "  tConst,\n" +
+                "  averageRating,\n" +
+                "  startYear\n" +
+                "FROM Production\n" +
+                "  NATURAL JOIN Ratings\n" +
+                "WHERE numVotes > 70\n" +
+                "      AND titleType = 'movie'\n" +
+                "      AND adult = 0\n" +
+                "      AND startYear = " + year + "\n" +
+                "      AND primaryTitle = originalTitle";
     }
 
     private static String getActorDiedBeforeReleaseQuery(int startYear, int endYear) {

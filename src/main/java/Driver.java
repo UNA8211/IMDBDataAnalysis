@@ -30,10 +30,9 @@ public class Driver {
     public static void main(String[] args) {
         QueryEngine queryEngine = new QueryEngine();
 
-        // analyzeEffectOfCrewDeath(queryEngine);
-        //analyzePredictabilityOfSequels(queryEngine, false);
-        analyzePredictabilityOfAwards(queryEngine);
-       // analyzePerformanceOfPrimaryGenre(queryEngine, true);
+        // analyzeEffectOfCrewDeath(queryEngine);\
+        analyzeBestMonths(queryEngine, false);
+        // analyzePerformanceOfPrimaryGenre(queryEngine, true);
 
         queryEngine.closeConnection();
     }
@@ -81,18 +80,23 @@ public class Driver {
         modelBuilder.buildModel(movies, null, timeSpan);
     }
 
-    private static void analyzePredictabilityOfSequels(QueryEngine queryEngine, boolean useLocalDataset) {
-        IModelBuilder modelBuilder = new SequelPredictionModelBuilder();
+    private static void analyzeBestMonths(QueryEngine queryEngine, boolean useLocalDataset) {
+        IModelBuilder modelBuilder = new MonthToMonthRatingsModelBuilder();
         TimeSpan timeSpan = new TimeSpan(1980, 2010);
 
         Dataset movies;
         if (useLocalDataset) {
             movies = DatasetBuilder.buildDataset("datasets/sequels.tsv");
         } else {
-            movies = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.Sequels, timeSpan));
+            movies = new Dataset();
+            for (int i = 1960; i < 2017; i++) {
+                Dataset year = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.MovieMonths, new TimeSpan(i, i)));
+                year.shuffle();
+                movies.addAll(year.subList(0, 100));
+            }
         }
 
-        JSONEngine.fetchData(movies, "Awards");
+        // Todo: omdb data fetch
 
         modelBuilder.buildModel(movies, null, timeSpan);
     }
