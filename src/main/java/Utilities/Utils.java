@@ -2,19 +2,36 @@ package Utilities;
 
 import QueryEngine.Dataset;
 import QueryEngine.JSONEngine;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Utils {
 
     public static final Pattern AWARD_NUM_REGEX = Pattern.compile("(\\d+)");
 
-    public static List<String> pullAwardData(String awards) {
-        awards = awards.substring(!awards.contains("Another") ? 0 : awards.indexOf("Another"));
-        List<String> awardData = JSONEngine.extractFromField(AWARD_NUM_REGEX, awards);
+    public static List<String> parseJsonAttr(JSONObject parse, String... attrs) {
+        List<String> attrsForObject = new ArrayList<>();
+        for (String attr : attrs) {
+            switch (attr) {
+                case "Awards":
+                    attrsForObject.addAll(pullAwardsData(parse.getString(attr)));
+                default:
+                    attrsForObject.add(Objects.requireNonNull(parse.getString(attr)));
+            }
+        }
+        return attrsForObject;
+    }
+
+
+    public static List<String> pullAwardsData(String unParsed) {
+        unParsed = unParsed.substring(!unParsed.contains("Another") ? 0 : unParsed.indexOf("Another"));
+        List<String> awardData = JSONEngine.extractFromField(AWARD_NUM_REGEX, unParsed);
         if (awardData.size() < 1) {
             awardData.add("0");
             awardData.add("0");
@@ -68,6 +85,10 @@ public class Utils {
             }
         }
     }
+
+//    public Date convertToDate(String date) {
+//
+//    }
 
     public static void setFileOut(String fileName) {
         try {

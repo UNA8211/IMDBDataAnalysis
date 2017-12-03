@@ -22,13 +22,13 @@ public class JSONEngine {
 
     private static final String url = "http://www.omdbapi.com/?apikey=9ac195bd&i=";
 
-    public static void fetchData(Dataset movies, String attribute) {
+    public static void fetchData(Dataset movies, String... attributes) {
         Long startTime = System.currentTimeMillis();
         System.out.print("Begin omdbapi data fetch... ");
         try {
             CompletableFuture.allOf(movies.parallelStream()
                     .map(movie -> CompletableFuture.supplyAsync(() ->
-                            movie.addAll(Utils.pullAwardData(Objects.requireNonNull(readJsonFromUrl(movie.get(0))).getString(attribute)))))
+                            movie.addAll(Utils.parseJsonAttr(readJsonFromUrl(movie.get(0)), attributes))))
                     .toArray(CompletableFuture[]::new))
                     .get();
         } catch (InterruptedException | ExecutionException e) {

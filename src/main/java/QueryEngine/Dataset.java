@@ -59,4 +59,8 @@ public class Dataset extends ArrayList<List<String>> {
     public Dataset getTestSet() {
         return new Dataset(this.subList(this.size() / 2, this.size()));
     }
+
+    public void print() {
+        this.forEach(set -> System.out.println(set.toString()));
+    }
 }

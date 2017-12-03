@@ -11,7 +11,8 @@ public enum QueryType {
     ActorIndividual("Individual average rating"),
     MovieMonths("Predictive power of a films attributes on the chance of a sequel"),
     PrimaryGenre("Relative performance of an individual outside their primary genre"),
-    Awards("Predictive power of a films attributes on the number of awards it receives");
+    Awards("Predictive power of a films attributes on the number of awards it receives"),
+    GenreYear("Relative performance of genres that have a largely successful film");
 
     private String description;
 
