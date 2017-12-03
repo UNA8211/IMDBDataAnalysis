@@ -5,10 +5,11 @@ import QueryEngine.JSONEngine;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Utils {
@@ -21,6 +22,16 @@ public class Utils {
             switch (attr) {
                 case "Awards":
                     attrsForObject.addAll(pullAwardsData(parse.getString(attr)));
+                    break;
+                case "Ratings":
+                    attrsForObject.add(Objects.requireNonNull(parse.getJSONArray(attr).getJSONObject(0).getString("Value").substring(0, 3)));
+                    break;
+                case "BoxOffice":
+                    attrsForObject.add(Objects.requireNonNull(parseMoney(parse.getString(attr))));
+                    break;
+                case "Released":
+                    attrsForObject.add(Objects.requireNonNull(convertDate(parse.getString(attr))));
+                    break;
                 default:
                     attrsForObject.add(Objects.requireNonNull(parse.getString(attr)));
             }
@@ -86,9 +97,36 @@ public class Utils {
         }
     }
 
-//    public Date convertToDate(String date) {
-//
-//    }
+    public static void pruneAttribute(Dataset s, int attrIndex) {
+        Iterator<List<String>> iterator = s.iterator();
+        while (iterator.hasNext()) {
+            List<String> row = iterator.next();
+            System.out.println(row.get(0));
+            if (row.get(attrIndex).equalsIgnoreCase("n/a")) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public static String parseMoney(String money) {
+        String s = money.replace('$', '\0');
+        s = s.replace(',', '\0');
+
+        return s;
+    }
+
+    public static String convertDate(String date) {
+        try {
+            DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+            Date formatted = df.parse(date);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(formatted);
+            return Month.of(cal.get(Calendar.MONTH)).name();
+        } catch (ParseException e ) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static void setFileOut(String fileName) {
         try {

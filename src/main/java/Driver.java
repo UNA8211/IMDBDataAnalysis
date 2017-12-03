@@ -1,6 +1,7 @@
 import Modeling.Builders.*;
 import Modeling.TimeSpan;
 import QueryEngine.*;
+import Utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Driver {
     public static void main(String[] args) {
         QueryEngine queryEngine = new QueryEngine();
 
-        analyzeBestMonths(queryEngine, false);
+        analyzeBestMonths(queryEngine, true);
 
         // analyzeEffectOfCrewDeath(queryEngine);
         //analyzePredictabilityOfSequels(queryEngine, false);
@@ -102,17 +103,21 @@ public class Driver {
 
         Dataset movies;
         if (useLocalDataset) {
-            movies = DatasetBuilder.buildDataset("datasets/sequels.tsv");
+            movies = DatasetBuilder.buildDataset("src/main/java/Data/dummyData.tsv");
         } else {
             movies = new Dataset();
-            for (int i = 1960; i < 2017; i++) {
+            for (int i = 2015; i < 2016; i++) {
                 Dataset year = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.MovieMonths, new TimeSpan(i, i)));
                 year.shuffle();
                 movies.addAll(year.subList(0, 100));
             }
+
+            JSONEngine.fetchData(movies, "Ratings", "BoxOffice", "Released");
         }
 
-        // Todo: omdb data fetch
+        Utils.pruneAttribute(movies, 3);
+
+        Utils.setFileOut("src/main/java/Data/bestMonths2");
 
         modelBuilder.buildModel(movies, null, timeSpan);
     }

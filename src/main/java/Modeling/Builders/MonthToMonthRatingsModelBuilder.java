@@ -2,6 +2,7 @@ package Modeling.Builders;
 
 import Modeling.TimeSpan;
 import QueryEngine.Dataset;
+import Utilities.Utils;
 
 import java.util.regex.Pattern;
 
@@ -19,5 +20,6 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
     @Override
     public void buildModel(Dataset movies, Dataset ignored, TimeSpan timeSpan) {
         movies.forEach(System.out::println);
+        Utils.setConsoleOut();
     }
 }
