@@ -118,7 +118,7 @@ public class Driver {
         // Prune out movies without box office
         Utils.pruneAttribute(movies, 3);
 
-        Utils.setFileOut("src/main/java/Data/bestMonths2");
+        //Utils.setFileOut("src/main/java/Data/bestMonths2");
 
         modelBuilder.buildModel(movies, null, timeSpan);
     }

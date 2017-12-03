@@ -101,7 +101,6 @@ public class Utils {
         Iterator<List<String>> iterator = s.iterator();
         while (iterator.hasNext()) {
             List<String> row = iterator.next();
-            System.out.println(row.get(0));
             if (row.get(attrIndex).equalsIgnoreCase("n/a")) {
                 iterator.remove();
             }
