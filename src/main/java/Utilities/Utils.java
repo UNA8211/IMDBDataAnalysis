@@ -5,8 +5,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.text.*;
-import java.time.Month;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -122,16 +120,19 @@ public class Utils {
     }
 
     private static String convertDate(String date) {
-        try {
-            DateFormat df = new SimpleDateFormat("dd MMM yyyy");
-            Date formatted = df.parse(date);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(formatted);
-            return Month.of(cal.get(Calendar.MONTH)).name();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (date.isEmpty() || date.equals("N/A")) {
+            return "N/A";
         }
-        return null;
+        return date.replaceAll("[0-9]+", "").trim();
+    }
+
+    public static void sleep(int seconds) {
+        double endSleep = (System.currentTimeMillis() / 1000.0 + seconds);
+        while (true) {
+            if ((System.currentTimeMillis() / 1000.0) > endSleep) {
+                break;
+            }
+        }
     }
 
     public static void setFileOut(String fileName) {
