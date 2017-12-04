@@ -2,18 +2,11 @@ package Modeling.Builders;
 
 import Modeling.TimeSpan;
 import QueryEngine.Dataset;
-import Utilities.Utils;
 
 import java.time.Month;
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
-
-    private Pattern validTitle = Pattern.compile("[a-zA-Z\\s]+");
-    private Pattern possibleSequel1 = Pattern.compile("(.)+[:,;]");
-    private Pattern possibleSequel2 = Pattern.compile("(.)+[Two]+");
-    private Pattern possibleSequel3 = Pattern.compile("(.)+[2]+");
 
     public MonthToMonthRatingsModelBuilder() {
 
@@ -29,20 +22,18 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
 
         //todo: Run set on dataset
         List<List<Double>> allAverages = new ArrayList<>();
-        Iterator it = year.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
+        for (Object o : year.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
             allAverages.add(calcMonthsForYear(year.get(pair.getKey()), (Integer) pair.getKey()));
         }
 
-        List<Double> finalAverages =getTotalMonthAverages(allAverages);
+        List<Double> finalAverages = getTotalMonthAverages(allAverages);
         int i = 1;
         for (Double average : finalAverages) {
             System.out.println("AVERAGE PERFORMANCE FOR " + Month.of(i).name());
             System.out.println(average);
             i++;
         }
-
     }
 
     private List<Double> getTotalMonthAverages(List<List<Double>> allAverages) {
@@ -61,10 +52,8 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
         HashMap<Integer, Dataset> setsByYear = new HashMap<>();
         Dataset byYear = new Dataset();
         String year = s.get(0).get(2);
-        Iterator<List<String>> iterator = s.iterator();
 
-        while (iterator.hasNext()) {
-            List<String> current = iterator.next();
+        for (List<String> current : s) {
             if (!current.get(2).equalsIgnoreCase(year)) {
                 setsByYear.put(Integer.parseInt(year), byYear);
                 byYear = new Dataset();
@@ -72,7 +61,7 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
             }
             byYear.add(current);
         }
-        setsByYear.put(Integer.parseInt(year),byYear);
+        setsByYear.put(Integer.parseInt(year), byYear);
         return setsByYear;
     }
 
@@ -97,9 +86,10 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
         return monthPerformances;
     }
 
-    private Double averageRatingForMonth(Dataset s) {
+    private Double averageRatingForMonth(Dataset dataset) {
         List<Double> moviePerformances = new ArrayList<>();
-        for (List<String> movie : s) {
+
+        for (List<String> movie : dataset) {
             Double performance = Double.parseDouble(movie.get(1));
             System.out.println("Performance for " + movie.get(0) + ": " + performance);
             moviePerformances.add(performance);
@@ -118,4 +108,10 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
         average /= moviePerformances.size();
         return average;
     }
+
+    //todo: Add award and nominations metric
+    private Double calcPerformance(Double i, Integer r) {
+        return (i / 2) * Math.sqrt(r);
+    }
+
 }
