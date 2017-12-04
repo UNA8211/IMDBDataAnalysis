@@ -5,9 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.time.Month;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -22,6 +20,7 @@ public class Utils {
 
     /**
      * Uses Extracts the given attributes from a JSON object.
+     *
      * @param parse JSON object to extract from
      * @param attrs List of attributes to pull
      * @return a list of the attribute's values
@@ -52,6 +51,7 @@ public class Utils {
 
     /**
      * Splits the award string into two values for nominations and wins.
+     *
      * @param unParsed unparsed award string
      * @return both nominations and wins
      */
@@ -70,8 +70,9 @@ public class Utils {
 
     /**
      * Generic extractor using a given regex pattern.
+     *
      * @param pattern pattern to match
-     * @param line string to parse
+     * @param line    string to parse
      * @return List of all extracted values
      */
     private static List<String> extractFromField(Pattern pattern, String line) {
@@ -90,10 +91,11 @@ public class Utils {
 
     /**
      * Converts a dataset to an arff file for use in Weka's classifier classes
-     * @param s Dataset to convert
+     *
+     * @param s        Dataset to convert
      * @param fileName file to write to
      * @param relation relation title
-     * @param attrs in order list of attributes and their type. Each attribute should be given a equivalent type.
+     * @param attrs    in order list of attributes and their type. Each attribute should be given a equivalent type.
      */
     public static void exportToArff(Dataset s, String fileName, String relation, String... attrs) {
         BufferedWriter bw = null;
@@ -137,7 +139,8 @@ public class Utils {
 
     /**
      * Remove lines of a Dataset if a specified attribute contains no value.
-     * @param s Dataset to prune
+     *
+     * @param s         Dataset to prune
      * @param attrIndex Index of the attribute to check
      */
     public static void pruneAttribute(Dataset s, int attrIndex) {
@@ -146,6 +149,7 @@ public class Utils {
 
     /**
      * Remove USD format. Converts to straight integer
+     *
      * @param money dollar value in USD format
      * @return formatted string
      */
@@ -158,6 +162,7 @@ public class Utils {
 
     /**
      * Extracts the month from a date.
+     *
      * @param date date in the format dd MMM yyyy
      * @return Month as MMM
      */
@@ -175,6 +180,7 @@ public class Utils {
 
     /**
      * Wait a specified period of time
+     *
      * @param seconds seconds to wait
      */
     public static void sleep(int seconds) {
@@ -188,6 +194,7 @@ public class Utils {
 
     /**
      * Set the console to output into a text file.
+     *
      * @param fileName file to write
      */
     public static void setFileOut(String fileName) {

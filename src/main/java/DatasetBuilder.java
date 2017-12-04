@@ -9,6 +9,7 @@ public class DatasetBuilder {
 
     /**
      * Read data from a TSV and convert it to a Dataset
+     *
      * @param fileName file to read from
      * @return Dataset of the file data
      */
@@ -28,8 +29,9 @@ public class DatasetBuilder {
 
     /**
      * Gets the file stream for reading
+     *
      * @param file file to read from
-     * @return bufferedreader
+     * @return file stream
      */
     private static Stream<String> getFileStream(File file) {
         try {

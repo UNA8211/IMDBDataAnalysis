@@ -31,6 +31,12 @@ public class QueryFactory {
         }
     }
 
+    /**
+     * Fetches the id, rating, and release year of films
+     *
+     * @param year, only fetch films released in year
+     * @return SQL query as a string
+     */
     private static String getMovieMonthsQuery(int year) {
         return "SELECT\n" +
                 "  tConst,\n" +
@@ -45,6 +51,14 @@ public class QueryFactory {
                 "      AND primaryTitle = originalTitle";
     }
 
+    /**
+     * Creates the SQL query selecting the names of crew members and the respective ratings of films they had a part in
+     * during the supplied year range where this individual died prior to the film's release.
+     *
+     * @param startYear, lower bound of the date range
+     * @param endYear,   upper bound of the date range
+     * @return SQL query as a string
+     */
     private static String getActorDiedBeforeReleaseQuery(int startYear, int endYear) {
         return "SELECT\n" +
                 "  primaryTitle,\n" +
@@ -76,6 +90,14 @@ public class QueryFactory {
                 "  AND startYear > deathYear;";
     }
 
+    /**
+     * Creates the SQL query selecting the names of films released during the suppied date window for which
+     * non of the cast or crew died prior to the film's release.
+     *
+     * @param startYear, lower bound of the date range
+     * @param endYear,   upper bound of the date range
+     * @return SQL query as a string
+     */
     private static String getActorNotDiedBeforeReleaseQuery(int startYear, int endYear) {
         return "SELECT\n" +
                 "  primaryTitle,\n" +
@@ -104,6 +126,14 @@ public class QueryFactory {
                 "  AND startYear < deathYear;";
     }
 
+    /**
+     * Creates the SQL query for fetching pairs of actors who appeared together in films within the
+     * provided date range
+     *
+     * @param startYear, lower bound of the date range
+     * @param endYear,   upper bound of the date range
+     * @return SQL query as a string
+     */
     private static String getActorPairsQuery(int startYear, int endYear) {
         return "SELECT\n" +
                 "  actor1.nConst AS nConst1,\n" +
@@ -133,6 +163,13 @@ public class QueryFactory {
                 "LIMIT 500000";
     }
 
+    /**
+     * Creates the SQL query for retrieving the average rating of each actor for films in the date range
+     *
+     * @param startYear, lower bound of the date range
+     * @param endYear,   upper bound of the date range
+     * @return SQL query as a string
+     */
     private static String getActorAverageRatingQuery(int startYear, int endYear) {
         return "SELECT\n" +
                 "  nConst,\n" +
@@ -151,6 +188,13 @@ public class QueryFactory {
                 "GROUP BY nConst\n";
     }
 
+    /**
+     * Creates the SQL query for fetching the ratings and genres of movies within the supplied date range
+     *
+     * @param startYear, lower bound of the date range
+     * @param endYear,   upper bound of the date range
+     * @return SQL query as a string
+     */
     private static String getActorsGenres(int startYear, int endYear) {
         return "SELECT\n" +
                 "  primaryName,\n" +
@@ -171,6 +215,13 @@ public class QueryFactory {
                 "LIMIT 1000000";
     }
 
+    /**
+     * Creates the SQL query for fetching the financial and rating data for movies between the dates provided
+     *
+     * @param startYear, lower bound of the date range
+     * @param endYear,   upper bound of the date range
+     * @return SQL query as a string
+     */
     private static String getAwardDataQuery(int startYear, int endYear) {
         return "SELECT \n" +
                 "  tConst,\n" +
@@ -190,6 +241,13 @@ public class QueryFactory {
                 "LIMIT 1000";
     }
 
+    /**
+     * Creates the SQL query for selecting movies from a particular genre from a given year
+     *
+     * @param startYear, the year in question
+     * @param genre,     the specific genre to be retrieved
+     * @return SQL query as string
+     */
     private static String getSameYearGenreQuery(int startYear, int endYear, String genre) {
         return "SELECT p.tConst, p.primaryTitle, g.genre, r.numVotes, r.averageRating\n" +
                 "FROM Production p, Genre g, Ratings r\n" +
