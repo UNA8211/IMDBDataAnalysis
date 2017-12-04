@@ -25,7 +25,7 @@ public class QueryFactory {
             case PrimaryGenre:
                 return getActorsGenres(timeSpan.startYear, timeSpan.endYear);
             case GenreYear:
-                return getSameYearGenreQuery(timeSpan.startYear, timeSpan.endYear);
+                return getSameYearGenreQuery(timeSpan.startYear, timeSpan.endYear, "Horror");
             default:
                 throw new IllegalArgumentException("Invalid query type!");
         }
@@ -190,15 +190,14 @@ public class QueryFactory {
                 "LIMIT 1000";
     }
 
-    private static String getSameYearGenreQuery(int startYear, int endYear) {
-        return "select p.tConst, p.primaryTitle, p.runTime, g.genre, r.numVotes, r.averageRating\n" +
-                "from Production p, Genre g, Ratings r\n" +
-                "where startYear = " + startYear + "\n" +
-                "and titleType = 'movie'\n" +
-                "and runtime > 0\n" +
-                "and g.tConst = p.tConst\n" +
-                "and r.tConst = p.tConst\n" +
-                "order by g.genre\n" +
-                "limit 100";
+    private static String getSameYearGenreQuery(int startYear, int endYear, String genre) {
+        return "SELECT p.tConst, p.primaryTitle, g.genre, r.numVotes, r.averageRating\n" +
+                "FROM Production p, Genre g, Ratings r\n" +
+                "WHERE g.genre LIKE '" + genre + "'\n" +
+                "AND p.titleType like 'movie'\n" +
+                "AND p.startYear = " + startYear + "\n" +
+                "AND r.numVotes > 200\n" +
+                "AND p.tConst = g.tConst\n" +
+                "AND r.tConst = p.tConst";
     }
 }

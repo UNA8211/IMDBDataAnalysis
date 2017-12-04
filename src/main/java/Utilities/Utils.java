@@ -120,11 +120,10 @@ public class Utils {
             Date formatted = df.parse(date);
             Calendar cal = Calendar.getInstance();
             cal.setTime(formatted);
-            return Month.of(cal.get(Calendar.MONTH)).name();
+            return Month.of(cal.get(Calendar.MONTH) + 1).name();
         } catch (ParseException e ) {
-            e.printStackTrace();
+            return "N/A";
         }
-        return null;
     }
 
     public static void setFileOut(String fileName) {

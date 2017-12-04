@@ -2,6 +2,7 @@ import Modeling.Builders.*;
 import Modeling.TimeSpan;
 import QueryEngine.*;
 import Utilities.Utils;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,8 @@ public class Driver {
     public static void main(String[] args) {
         QueryEngine queryEngine = new QueryEngine();
 
-        analyzeBestMonths(queryEngine, true);
+        //analyzeBestMonths(queryEngine, true);
+        analyzeGenrePerformance(queryEngine);
 
         // analyzeEffectOfCrewDeath(queryEngine);
         //analyzePredictabilityOfSequels(queryEngine, false);
@@ -99,7 +101,6 @@ public class Driver {
 
     private static void analyzeBestMonths(QueryEngine queryEngine, boolean useLocalDataset) {
         IModelBuilder modelBuilder = new MonthToMonthRatingsModelBuilder();
-        TimeSpan timeSpan = new TimeSpan(1980, 2010);
 
         Dataset movies;
         if (useLocalDataset) {
@@ -120,6 +121,18 @@ public class Driver {
 
         //Utils.setFileOut("src/main/java/Data/bestMonths2");
 
-        modelBuilder.buildModel(movies, null, timeSpan);
+        modelBuilder.buildModel(movies, null, null);
+    }
+
+    private static void analyzeGenrePerformance(QueryEngine engine) {
+        IModelBuilder modelBuilder = new GenreYearPerformanceBuilder();
+
+        Dataset movies = engine.executeQuery(QueryFactory.buildQuery(QueryType.GenreYear, new TimeSpan(2016, 2016)));
+        JSONEngine.fetchData(movies, "BoxOffice", "Released");
+        Utils.pruneAttribute(movies, 5);
+
+        Utils.setFileOut("src/main/java/Data/movies");
+        movies.print();
+        Utils.setConsoleOut();
     }
 }
