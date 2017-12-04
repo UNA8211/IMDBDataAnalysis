@@ -82,7 +82,7 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
             System.out.println("BEGINNING PERFORMANCE ANALYSIS FOR " + month.name() + ", " + year);
             Dataset rowsForMonth = new Dataset();
             for (List<String> row : s) {
-                if (row.get(4).equalsIgnoreCase(month.name().substring(0, 3))) {
+                if (row.get(3).equalsIgnoreCase(month.name().substring(0, 3))) {
                     rowsForMonth.add(row);
                 }
             }
@@ -100,9 +100,12 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
     private Double averageRatingForMonth(Dataset s) {
         List<Double> moviePerformances = new ArrayList<>();
         for (List<String> movie : s) {
-            Double performance = calcPerformance(Double.parseDouble(movie.get(1)), Integer.parseInt(movie.get(3)));
+            Double performance = Double.parseDouble(movie.get(1));
             System.out.println("Performance for " + movie.get(0) + ": " + performance);
             moviePerformances.add(performance);
+        }
+        if (moviePerformances.size() == 0) {
+            return 0.0;
         }
         return average(moviePerformances);
     }
@@ -115,11 +118,4 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
         average /= moviePerformances.size();
         return average;
     }
-
-    //todo: Add award and nominations metric
-    private Double calcPerformance(Double i, Integer r) {
-        return (i / 2) * Math.sqrt(r);
-    }
-
-
 }

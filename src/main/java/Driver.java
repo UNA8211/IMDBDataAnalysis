@@ -103,7 +103,7 @@ public class Driver {
 
         Dataset movies;
         if (useLocalDataset) {
-            movies = DatasetBuilder.buildDataset("src/main/java/Data/dummyData.tsv");
+            movies = DatasetBuilder.buildDataset("src/main/java/Data/months.tsv");
         } else {
             movies = new Dataset();
             for (int i = 2015; i < 2016; i++) {
