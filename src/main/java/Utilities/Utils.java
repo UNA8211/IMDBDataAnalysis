@@ -1,7 +1,7 @@
 package Utilities;
 
 import QueryEngine.Dataset;
-import QueryEngine.JSONEngine;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -10,11 +10,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
 
-    public static final Pattern AWARD_NUM_REGEX = Pattern.compile("(\\d+)");
+    private static final Pattern AWARD_NUM_REGEX = Pattern.compile("(\\d+)");
 
     public static List<String> parseJsonAttr(JSONObject parse, String... attrs) {
         List<String> attrsForObject = new ArrayList<>();
@@ -40,9 +41,9 @@ public class Utils {
     }
 
 
-    public static List<String> pullAwardsData(String unParsed) {
+    private static List<String> pullAwardsData(String unParsed) {
         unParsed = unParsed.substring(!unParsed.contains("Another") ? 0 : unParsed.indexOf("Another"));
-        List<String> awardData = JSONEngine.extractFromField(AWARD_NUM_REGEX, unParsed);
+        List<String> awardData = extractFromField(AWARD_NUM_REGEX, unParsed);
         if (awardData.size() < 1) {
             awardData.add("0");
             awardData.add("0");
@@ -51,6 +52,20 @@ public class Utils {
         }
 
         return awardData;
+    }
+
+    private static List<String> extractFromField(Pattern pattern, String line) {
+        try {
+            Matcher matcher = pattern.matcher(line);
+            List<String> awardData = new ArrayList<>();
+
+            while (matcher.find()) {
+                awardData.add(matcher.group(1));
+            }
+            return awardData;
+        } catch (JSONException e) {
+            return new ArrayList<>();
+        }
     }
 
     public static List<String> noAwards() {
@@ -98,16 +113,10 @@ public class Utils {
     }
 
     public static void pruneAttribute(Dataset s, int attrIndex) {
-        Iterator<List<String>> iterator = s.iterator();
-        while (iterator.hasNext()) {
-            List<String> row = iterator.next();
-            if (row.get(attrIndex).equalsIgnoreCase("n/a")) {
-                iterator.remove();
-            }
-        }
+        s.removeIf(row -> row.get(attrIndex).equalsIgnoreCase("n/a"));
     }
 
-    public static String parseMoney(String money) {
+    private static String parseMoney(String money) {
         String s = money.replace('$', '\0');
         s = s.replace(',', '\0');
 
@@ -121,8 +130,17 @@ public class Utils {
             Calendar cal = Calendar.getInstance();
             cal.setTime(formatted);
             return Month.of(cal.get(Calendar.MONTH) + 1).name();
-        } catch (ParseException e ) {
+        } catch (ParseException e) {
             return "N/A";
+        }
+    }
+
+    public static void sleep(int seconds) {
+        double endSleep = (System.currentTimeMillis() / 1000.0 + seconds);
+        while (true) {
+            if ((System.currentTimeMillis() / 1000.0) > endSleep) {
+                break;
+            }
         }
     }
 
