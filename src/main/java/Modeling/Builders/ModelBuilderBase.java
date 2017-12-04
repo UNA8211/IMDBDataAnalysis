@@ -11,6 +11,7 @@ import weka.core.Instances;
 import weka.core.converters.ArffLoader;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,13 +50,13 @@ public class ModelBuilderBase implements IModelBuilder {
             accuracies.add(computeFold(classifier));
         }
 
-        double avgAccuracy = 0.0;
+        Double avgAccuracy = 0.0;
         for (Double accuracy : accuracies) {
             avgAccuracy += accuracy;
         }
         avgAccuracy /= accuracies.size();
 
-        double stdDev = 0.0;
+        Double stdDev = 0.0;
         for (Double accuracy : accuracies) {
             stdDev += Math.pow(accuracy - avgAccuracy, 2);
         }
@@ -64,8 +65,17 @@ public class ModelBuilderBase implements IModelBuilder {
         System.out.println(classifier.toString());
         System.out.println("Value prediction within range: " + this.accuracyRequirement);
         System.out.println("------------------------------------------------");
-        System.out.println("Average accuracy: " + avgAccuracy + ", StdDev: " + stdDev);
+        System.out.println("Average accuracy: " + toPercent(avgAccuracy) + ", StdDev: " + toPercent(stdDev));
         System.out.println("\n\n");
+    }
+
+    /**
+     * Convert double value to percentage
+     * @param value number to convert
+     * @return
+     */
+    protected String toPercent(Double value) {
+        return new DecimalFormat("#.##").format(value * 100);
     }
 
     protected void computeStats(List<ActorPair> pairs) {

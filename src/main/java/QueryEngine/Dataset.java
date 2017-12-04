@@ -31,10 +31,12 @@ public class Dataset extends ArrayList<List<String>> {
             int columnCount = metaData.getColumnCount();
             String[] columns = new String[columnCount];
 
+            // Collect all columns from the resultset
             for (int i = 1; i <= columnCount; i++) {
                 columns[i - 1] = metaData.getColumnLabel(i);
             }
 
+            // Add each line to the dataset
             while (resultSet.next()) {
                 List<String> values = new ArrayList<>(columnCount);
                 for (String column : columns) {
@@ -52,10 +54,12 @@ public class Dataset extends ArrayList<List<String>> {
         Collections.shuffle(this);
     }
 
+    // Split the dataset in half for training
     public Dataset getTrainingSet() {
         return new Dataset(this.subList(0, this.size() / 2));
     }
 
+    // Split the dataset in half for classification
     public Dataset getTestSet() {
         return new Dataset(this.subList(this.size() / 2, this.size()));
     }

@@ -5,6 +5,9 @@ import QueryEngine.Dataset;
 import Utilities.Utils;
 import weka.classifiers.lazy.IBk;
 
+/**
+ * Attempts to answer the question
+ */
 public class AwardPredictionModelBuilder extends ModelBuilderBase {
 
     private final String[] attributes = {"year", "DATE", "runtime",

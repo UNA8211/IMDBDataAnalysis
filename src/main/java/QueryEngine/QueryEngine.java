@@ -10,6 +10,7 @@ public class QueryEngine {
 
     private Connection connection;
 
+    // Database information
     public QueryEngine() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -22,6 +23,11 @@ public class QueryEngine {
         }
     }
 
+    /**
+     * Queries the Google Cloud Service DB as a Dataset
+     * @param query SQL query
+     * @return a Dataset of the results
+     */
     public Dataset executeQuery(String query) {
         System.out.print("\nBegin SQL query execution... ");
         long startTime = System.currentTimeMillis();
@@ -39,6 +45,9 @@ public class QueryEngine {
         return null;
     }
 
+    /**
+     * End the MySQL database connection.
+     */
     public void closeConnection() {
         try {
             if (connection != null) {

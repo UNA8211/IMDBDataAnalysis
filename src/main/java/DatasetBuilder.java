@@ -7,11 +7,17 @@ import java.util.stream.Stream;
 
 public class DatasetBuilder {
 
+    /**
+     * Read data from a TSV and convert it to a Dataset
+     * @param fileName file to read from
+     * @return Dataset of the file data
+     */
     public static Dataset buildDataset(String fileName) {
         Long startTime = System.currentTimeMillis();
         System.out.print("Begin file read... ");
         List<String> dataLines = Objects.requireNonNull(getFileStream(new File(fileName))).collect(Collectors.toList());
 
+        // Split each line on the tab character and add it to the Dataset
         Dataset dataset = dataLines.parallelStream()
                 .map(line -> Arrays.asList(line.split("\t")))
                 .collect(Collectors.toCollection(Dataset::new));
@@ -20,6 +26,11 @@ public class DatasetBuilder {
         return dataset;
     }
 
+    /**
+     * Gets the file stream for reading
+     * @param file file to read from
+     * @return bufferedreader
+     */
     private static Stream<String> getFileStream(File file) {
         try {
             return new BufferedReader(new FileReader(file)).lines();

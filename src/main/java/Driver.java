@@ -29,6 +29,10 @@ public class Driver {
         decades.add(new TimeSpan(1900, 2020));
     }
 
+    /**
+     * Run all analyses
+     * @param args command line args
+     */
     public static void main(String[] args) {
         QueryEngine queryEngine = new QueryEngine();
 

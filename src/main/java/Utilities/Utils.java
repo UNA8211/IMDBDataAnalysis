@@ -13,10 +13,19 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utility class that contains several useful functions for field separation, file export, and parsing.
+ */
 public class Utils {
 
     private static final Pattern AWARD_NUM_REGEX = Pattern.compile("(\\d+)");
 
+    /**
+     * Uses Extracts the given attributes from a JSON object.
+     * @param parse JSON object to extract from
+     * @param attrs List of attributes to pull
+     * @return a list of the attribute's values
+     */
     public static List<String> parseJsonAttr(JSONObject parse, String... attrs) {
         List<String> attrsForObject = new ArrayList<>();
         for (String attr : attrs) {
@@ -41,6 +50,11 @@ public class Utils {
     }
 
 
+    /**
+     * Splits the award string into two values for nominations and wins.
+     * @param unParsed unparsed award string
+     * @return both nominations and wins
+     */
     private static List<String> pullAwardsData(String unParsed) {
         unParsed = unParsed.substring(!unParsed.contains("Another") ? 0 : unParsed.indexOf("Another"));
         List<String> awardData = extractFromField(AWARD_NUM_REGEX, unParsed);
@@ -54,6 +68,12 @@ public class Utils {
         return awardData;
     }
 
+    /**
+     * Generic extractor using a given regex pattern.
+     * @param pattern pattern to match
+     * @param line string to parse
+     * @return List of all extracted values
+     */
     private static List<String> extractFromField(Pattern pattern, String line) {
         try {
             Matcher matcher = pattern.matcher(line);
@@ -68,13 +88,13 @@ public class Utils {
         }
     }
 
-    public static List<String> noAwards() {
-        List<String> noAwards = new ArrayList<>();
-        noAwards.add("0");
-        noAwards.add("0");
-        return noAwards;
-    }
-
+    /**
+     * Converts a dataset to an arff file for use in Weka's classifier classes
+     * @param s Dataset to convert
+     * @param fileName file to write to
+     * @param relation relation title
+     * @param attrs in order list of attributes and their type. Each attribute should be given a equivalent type.
+     */
     public static void exportToArff(Dataset s, String fileName, String relation, String... attrs) {
         BufferedWriter bw = null;
         FileWriter fw = null;
@@ -84,6 +104,7 @@ public class Utils {
             bw = new BufferedWriter(fw);
 
             bw.write("@RELATION " + relation + "\n\n");
+            // Write all attributes and types
             for (int i = 0; i < attrs.length - 1; i += 2) {
                 bw.write("@ATTRIBUTE " + attrs[i] + " " +
                         (attrs[i + 1].equalsIgnoreCase("date") ? "DATE \"yyyy\"" : attrs[i + 1]) + "\n");
@@ -92,12 +113,14 @@ public class Utils {
             bw.write("\n");
 
             bw.write("@DATA\n");
+            // Add each data file
             for (List<String> row : s) {
                 bw.write(row.toString().substring(12).replace("]", "") + "\n");
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            // Close readers/writers
             try {
                 if (bw != null) {
                     bw.close();
@@ -112,17 +135,32 @@ public class Utils {
         }
     }
 
+    /**
+     * Remove lines of a Dataset if a specified attribute contains no value.
+     * @param s Dataset to prune
+     * @param attrIndex Index of the attribute to check
+     */
     public static void pruneAttribute(Dataset s, int attrIndex) {
         s.removeIf(row -> row.get(attrIndex).equalsIgnoreCase("n/a"));
     }
 
+    /**
+     * Remove USD format. Converts to straight integer
+     * @param money dollar value in USD format
+     * @return formatted string
+     */
     private static String parseMoney(String money) {
         String s = money.replace('$', '\0');
-        s = s.replace(',', '\0');
+        s = s.replace(",", "");
 
         return s;
     }
 
+    /**
+     * Extracts the month from a date.
+     * @param date date in the format dd MMM yyyy
+     * @return Month as MMM
+     */
     public static String convertDate(String date) {
         try {
             DateFormat df = new SimpleDateFormat("dd MMM yyyy");
@@ -135,6 +173,10 @@ public class Utils {
         }
     }
 
+    /**
+     * Wait a specified period of time
+     * @param seconds seconds to wait
+     */
     public static void sleep(int seconds) {
         double endSleep = (System.currentTimeMillis() / 1000.0 + seconds);
         while (true) {
@@ -144,6 +186,10 @@ public class Utils {
         }
     }
 
+    /**
+     * Set the console to output into a text file.
+     * @param fileName file to write
+     */
     public static void setFileOut(String fileName) {
         try {
             System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(fileName.concat(".txt"), true)), true));
@@ -152,6 +198,9 @@ public class Utils {
         }
     }
 
+    /**
+     * Set console output back to the console.
+     */
     public static void setConsoleOut() {
         System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
     }
