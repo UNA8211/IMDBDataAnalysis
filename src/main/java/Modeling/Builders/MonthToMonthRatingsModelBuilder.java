@@ -28,13 +28,33 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
         System.out.println("NEW DATASET");
 
         //todo: Run set on dataset
-        //todo: Logging and output
+        List<List<Double>> allAverages = new ArrayList<>();
         Iterator it = year.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            year.get(pair.getKey());
+            allAverages.add(calcMonthsForYear(year.get(pair.getKey()), (Integer) pair.getKey()));
         }
 
+        List<Double> finalAverages =getTotalMonthAverages(allAverages);
+        int i = 1;
+        for (Double average : finalAverages) {
+            System.out.println("AVERAGE PERFORMANCE FOR " + Month.of(i).name());
+            System.out.println(average);
+            i++;
+        }
+
+    }
+
+    private List<Double> getTotalMonthAverages(List<List<Double>> allAverages) {
+        List<Double> averages = new ArrayList<>();
+        for (Month month : Month.values()) {
+            Double finalAverage = 0.0;
+            for (List<Double> average : allAverages) {
+                finalAverage += average.get(month.getValue() - 1);
+            }
+            averages.add(finalAverage / allAverages.size());
+        }
+        return averages;
     }
 
     private HashMap<Integer, Dataset> splitOnYear(Dataset s) {
@@ -56,28 +76,47 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
         return setsByYear;
     }
 
-    private List<List<Double>> calcMonthsForYear(Dataset s) {
-        List<List<Double>> monthPerformances = new ArrayList<>();
+    private List<Double> calcMonthsForYear(Dataset s, int year) {
+        List<Double> monthPerformances = new ArrayList<>();
         for (Month month : Month.values()) {
+            System.out.println("BEGINNING PERFORMANCE ANALYSIS FOR " + month.name() + ", " + year);
             Dataset rowsForMonth = new Dataset();
             for (List<String> row : s) {
                 if (row.get(4).equalsIgnoreCase(month.name().substring(0, 3))) {
                     rowsForMonth.add(row);
                 }
             }
-            monthPerformances.add(averageRatingForMonth(rowsForMonth));
+            Double average = averageRatingForMonth(rowsForMonth);
+            monthPerformances.add(average);
+
+            System.out.println("AVERAGE PERFORMANCE FOR " + month.name() + ", " + year + ":");
+            System.out.println(average);
+
+            System.out.println();
         }
         return monthPerformances;
     }
 
-    private List<Double> averageRatingForMonth(Dataset s) {
+    private Double averageRatingForMonth(Dataset s) {
         List<Double> moviePerformances = new ArrayList<>();
         for (List<String> movie : s) {
-            moviePerformances.add(calcPerformance(Double.parseDouble(movie.get(1)), Integer.parseInt(movie.get(3))));
+            Double performance = calcPerformance(Double.parseDouble(movie.get(1)), Integer.parseInt(movie.get(3)));
+            System.out.println("Performance for " + movie.get(0) + ": " + performance);
+            moviePerformances.add(performance);
         }
-        return moviePerformances;
+        return average(moviePerformances);
     }
 
+    private Double average(List<Double> moviePerformances) {
+        Double average = 0.0;
+        for (Double perf : moviePerformances) {
+            average += perf;
+        }
+        average /= moviePerformances.size();
+        return average;
+    }
+
+    //todo: Add award and nominations metric
     private Double calcPerformance(Double i, Integer r) {
         return (i / 2) * Math.sqrt(r);
     }
