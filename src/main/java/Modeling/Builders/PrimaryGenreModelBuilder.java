@@ -30,7 +30,7 @@ public class PrimaryGenreModelBuilder extends ModelBuilderBase {
         actorGenres.parallelStream().forEachOrdered(example -> {
             String name = example.get(0);
             String genre = example.get(1);
-            double rating = Double.parseDouble(example.get(3));
+            double rating = Double.parseDouble(example.get(2));
 
             // If the actor already exists update, otherwise create new
             Actor existing = actors.get(name);

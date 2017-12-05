@@ -113,7 +113,7 @@ public class Driver {
             movies = DatasetBuilder.buildDataset("src/main/java/Data/months.tsv");
         } else {
             movies = new Dataset();
-            for (int i = 2005; i < 2016; i++) {
+            for (int i = 2007; i < 2016; i++) {
                 Dataset year = queryEngine.executeQuery(QueryFactory.buildQuery(QueryType.MovieMonths, new TimeSpan(i, i)));
                 year.shuffle();
                 movies.addAll(year.subList(0, 100));
