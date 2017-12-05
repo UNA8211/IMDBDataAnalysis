@@ -20,6 +20,8 @@ public class ActorPair implements Comparable<ActorPair> {
         this.combinedActorQuality = combinedActorQuality;
     }
 
+    // Factor the supplied rating into the average rating by weighting the current rating by the
+    // number of examples
     public void addPair(float rating) {
         this.combinedActorQuality = ((this.combinedActorQuality * this.count++) + rating) / this.count;
     }

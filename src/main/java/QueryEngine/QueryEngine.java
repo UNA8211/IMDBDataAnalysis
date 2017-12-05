@@ -25,6 +25,7 @@ public class QueryEngine {
 
     /**
      * Queries the Google Cloud Service DB as a Dataset
+     *
      * @param query SQL query
      * @return a Dataset of the results
      */

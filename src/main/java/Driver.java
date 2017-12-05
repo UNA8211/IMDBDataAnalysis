@@ -2,7 +2,6 @@ import Modeling.Builders.*;
 import Modeling.TimeSpan;
 import QueryEngine.*;
 import Utilities.Utils;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ public class Driver {
 
     /**
      * Run all analyses
+     *
      * @param args command line args
      */
     public static void main(String[] args) {

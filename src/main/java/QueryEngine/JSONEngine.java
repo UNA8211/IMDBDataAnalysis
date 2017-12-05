@@ -39,7 +39,8 @@ public class JSONEngine {
                 }
                 final int finalIndex = index;
                 // Asynchronous requests
-                futures.add(CompletableFuture.supplyAsync(() -> movies.get(finalIndex).addAll(Utils.parseJsonAttr(readJsonFromUrl(movies.get(finalIndex).get(0)), attributes))));
+                futures.add(CompletableFuture.supplyAsync(() -> movies.get(finalIndex)
+                        .addAll(Utils.parseJsonAttr(readJsonFromUrl(movies.get(finalIndex).get(0)), attributes))));
             }
 
             try {

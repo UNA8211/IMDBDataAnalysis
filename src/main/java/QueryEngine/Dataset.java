@@ -14,24 +14,23 @@ public class Dataset extends ArrayList<List<String>> {
     }
 
     public Dataset(List<List<String>> data) {
-        for (List<String> line : data) {
-            List<String> adding = new ArrayList<>(line);
-            this.add(adding);
-        }
+        data.stream().map(ArrayList::new).forEach(this::add);
     }
 
     public Dataset(Dataset dataset) {
         super(dataset);
     }
 
-    // Convert an SQL result set into dataset format
+    /**
+     * Convert an SQL result set into dataset format
+     */
     public Dataset(ResultSet resultSet) {
         try {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
             String[] columns = new String[columnCount];
 
-            // Collect all columns from the resultset
+            // Collect all columns from the ResultSet
             for (int i = 1; i <= columnCount; i++) {
                 columns[i - 1] = metaData.getColumnLabel(i);
             }
