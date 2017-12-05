@@ -9,7 +9,6 @@ public class CrewDeathModelBuilder extends ModelBuilderBase {
 
     @Override
     public void buildModel(Dataset died, Dataset living, TimeSpan timeSpan) {
-        System.out.println("Begin Analysis");
         // Get average rating of each dataset
         double avgDiedRating = 0.f;
         double avgLivingRating = 0.f;
@@ -38,7 +37,8 @@ public class CrewDeathModelBuilder extends ModelBuilderBase {
         diedStdDev = Math.sqrt(diedStdDev / died.size());
         livingStdDev = Math.sqrt(livingStdDev / living.size());
 
-        System.out.println("Year Range: (" + timeSpan.startYear + ", " + timeSpan.endYear + ")");
+        System.out.println(timeSpan.toString());
+        System.out.println("Dead size: " + died.size() + ", Living size: " + living.size());
         System.out.println("Rating for dead actors: " + avgDiedRating + " (" + diedStdDev + ")");
         System.out.println("Rating for living actors: " + avgLivingRating + " (" + livingStdDev + ")");
         System.out.println();

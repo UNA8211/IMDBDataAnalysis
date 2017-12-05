@@ -20,6 +20,7 @@ public class ActorPairModelBuilder extends ModelBuilderBase {
 
     @Override
     public void buildModel(Dataset actorPairs, Dataset averageActorRatings, TimeSpan timeSpan) {
+        System.out.println(timeSpan.toString() + " Num pairs: " + actorPairs.size() + ", " + averageActorRatings.size());
         // Parsing the SQL dataset, collect actor pairs as a HashMap
         HashMap<Integer, ActorPair> pairs = new HashMap<>();
         actorPairs.parallelStream().forEachOrdered(actorPair -> {

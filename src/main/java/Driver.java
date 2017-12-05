@@ -36,11 +36,10 @@ public class Driver {
     public static void main(String[] args) {
         QueryEngine queryEngine = new QueryEngine();
 
-        //analyzeBestMonths(queryEngine, true);
+        // analyzeBestMonths(queryEngine, true);
         analyzeGenrePerformance(queryEngine);
-
         // analyzeEffectOfCrewDeath(queryEngine);
-        //analyzePredictabilityOfSequels(queryEngine, false);
+        // analyzeEffectOfCrewDeath(queryEngine);
         //analyzePredictabilityOfAwards(queryEngine);
         // analyzePerformanceOfPrimaryGenre(queryEngine, true);
 
@@ -105,6 +104,7 @@ public class Driver {
 
     private static void analyzeBestMonths(QueryEngine queryEngine, boolean useLocalDataset) {
         IModelBuilder modelBuilder = new MonthToMonthRatingsModelBuilder();
+        TimeSpan timeSpan = new TimeSpan(2000, 2005);
 
         Dataset movies;
         if (useLocalDataset) {

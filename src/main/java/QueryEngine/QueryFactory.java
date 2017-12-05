@@ -79,6 +79,7 @@ public class QueryFactory {
                 "     NATURAL JOIN Ratings\n" +
                 "   WHERE averageRating IS NOT NULL\n" +
                 "         AND averageRating != 0\n" +
+                "         AND numVotes > 20\n" +
                 "         AND deathYear IS NOT NULL\n" +
                 "         AND deathYear > 1900\n" +
                 "  ) AS Part\n" +
@@ -116,6 +117,7 @@ public class QueryFactory {
                 "         NATURAL JOIN Ratings\n" +
                 "       WHERE averageRating IS NOT NULL\n" +
                 "             AND averageRating != 0\n" +
+                "             AND numVotes > 20\n" +
                 "             AND deathYear IS NOT NULL\n" +
                 "     ) AS Part\n" +
                 "  JOIN Production ON Part.tConst = Production.tConst\n" +
@@ -160,6 +162,7 @@ public class QueryFactory {
                 "       AND actor1.tConst = Production.tConst\n" +
                 "  JOIN Ratings\n" +
                 "    ON Production.tConst = Ratings.tConst\n" +
+                "WHERE numVotes > 50\n" +
                 "LIMIT 500000";
     }
 
@@ -184,6 +187,7 @@ public class QueryFactory {
                 "      WHERE adult = 0\n" +
                 "            AND startYear > " + startYear + "\n" +
                 "            AND startYear < " + endYear + "\n" +
+                "            AND numVotes > 50\n" +
                 "     ) AS ratings\n" +
                 "GROUP BY nConst\n";
     }

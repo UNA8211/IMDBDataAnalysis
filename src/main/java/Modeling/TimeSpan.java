@@ -13,4 +13,9 @@ public class TimeSpan {
         this.startYear = startYear;
         this.endYear = endYear;
     }
+
+    @Override
+    public String toString() {
+        return "Period, (" + startYear + ", " + endYear + ")";
+    }
 }
