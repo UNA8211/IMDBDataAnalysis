@@ -34,7 +34,7 @@ public class JSONEngine {
             List<CompletableFuture<Boolean>> futures = new ArrayList<>();
             // Break requests into chunks to avoid possible DDoS protections
             for (int cutoff = index + 50; index < cutoff; index++) {
-                if (index > movies.size()) {
+                if (index >= movies.size()) {
                     break;
                 }
                 final int finalIndex = index;

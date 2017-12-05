@@ -14,13 +14,12 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
 
     @Override
     public void buildModel(Dataset movies, Dataset ignored, TimeSpan timeSpan) {
-        movies.forEach(System.out::println);
         //Utils.setConsoleOut();
 
         HashMap<Integer, Dataset> year = splitOnYear(movies);
-        System.out.println("NEW DATASET");
 
-        //todo: Run set on dataset
+        System.out.println();
+
         List<List<Double>> allAverages = new ArrayList<>();
         for (Object o : year.entrySet()) {
             Map.Entry pair = (Map.Entry) o;
@@ -71,7 +70,7 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
             System.out.println("BEGINNING PERFORMANCE ANALYSIS FOR " + month.name() + ", " + year);
             Dataset rowsForMonth = new Dataset();
             for (List<String> row : s) {
-                if (row.get(3).equalsIgnoreCase(month.name().substring(0, 3))) {
+                if (row.get(4).equalsIgnoreCase(month.name())) {
                     rowsForMonth.add(row);
                 }
             }
@@ -90,12 +89,12 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
         List<Double> moviePerformances = new ArrayList<>();
 
         for (List<String> movie : dataset) {
-            Double performance = Double.parseDouble(movie.get(1));
+            Double performance = calcPerformance(Double.parseDouble(movie.get(1)), Integer.parseInt(movie.get(3)));
             System.out.println("Performance for " + movie.get(0) + ": " + performance);
             moviePerformances.add(performance);
         }
         if (moviePerformances.size() == 0) {
-            return 0.0;
+            return 50.0;
         }
         return average(moviePerformances);
     }
@@ -111,7 +110,7 @@ public class MonthToMonthRatingsModelBuilder extends ModelBuilderBase {
 
     //todo: Add award and nominations metric
     private Double calcPerformance(Double i, Integer r) {
-        return (i / 2) * Math.sqrt(r);
+        return (i / 2) * Math.pow(r, (1/4.0));
     }
 
 }

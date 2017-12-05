@@ -150,7 +150,7 @@ public class Utils {
      * @return formatted string
      */
     private static String parseMoney(String money) {
-        String s = money.replace('$', '\0');
+        String s = money.replace("$", "");
         s = s.replace(",", "");
 
         return s;

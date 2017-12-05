@@ -155,7 +155,8 @@ public class QueryFactory {
         return "SELECT\n" +
                 "  primaryName,\n" +
                 "  genre,\n" +
-                "  averageRating\n" +
+                "  averageRating," +
+                "  startYear\n" +
                 "FROM Person\n" +
                 "  NATURAL JOIN Acts_In\n" +
                 "  NATURAL JOIN Genre\n" +

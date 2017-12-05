@@ -22,7 +22,7 @@ public class AwardPredictionModelBuilder extends ModelBuilderBase {
         System.out.println("Initial dataset size: " + dataset.size());
         dataset.removeIf(element -> (element.get(7).equals("0") && element.get(8).equals("0")));
         System.out.println("Size of set with awards or nominations: " + dataset.size());
-        Utils.setFileOut("results/awardPrediction");
+        //Utils.setFileOut("results/awardPrediction");
 
         this.accuracyRequirement = 1.0;
         this.crossValidate(dataset, new IBk(1), this.attributes);
@@ -54,6 +54,6 @@ public class AwardPredictionModelBuilder extends ModelBuilderBase {
         this.crossValidate(dataset, new IBk(5), this.attributes);
         this.crossValidate(dataset, new IBk(7), this.attributes);
 
-        Utils.setConsoleOut();
+        //Utils.setConsoleOut();
     }
 }
